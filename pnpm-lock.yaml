@@ -38,6 +38,9 @@ importers:
       '@eslint/js':
         specifier: ^9.39.4
         version: 9.39.4
+      '@repo/config':
+        specifier: workspace:^
+        version: link:../../packages/config
       '@types/node':
         specifier: ^24.12.0
         version: 24.12.2
@@ -87,6 +90,9 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.3.0(jiti@1.21.7))
+      '@repo/config':
+        specifier: workspace:^
+        version: link:../../packages/config
       '@types/node':
         specifier: ^24.12.2
         version: 24.12.2
@@ -121,7 +127,13 @@ importers:
         specifier: ^8.0.10
         version: 8.0.10(@types/node@24.12.2)(jiti@1.21.7)
 
-  packages/ui: {}
+  packages/config: {}
+
+  packages/ui:
+    dependencies:
+      react:
+        specifier: ^19.0.0
+        version: 19.2.5
 
 packages:
 

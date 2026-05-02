@@ -70,6 +70,7 @@ export default function CustomCursor() {
   useEffect(() => {
     if (!enabled) {
       document.documentElement.classList.remove("has-custom-cursor");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCursor(DEFAULT_STATE);
       return;
     }
