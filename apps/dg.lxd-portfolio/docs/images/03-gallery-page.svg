@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Gallery page placeholder</title>
+  <desc id="desc">Placeholder image for the gallery archive page screenshot.</desc>
+  <rect width="1600" height="900" fill="#f7f5f2"/>
+  <rect x="70" y="70" width="1460" height="760" rx="32" fill="#fffdfb" stroke="#111010" stroke-opacity="0.12"/>
+  <rect x="120" y="120" width="1360" height="70" rx="18" fill="#f2eee9"/>
+  <rect x="120" y="240" width="520" height="120" rx="20" fill="#111010"/>
+  <rect x="120" y="410" width="360" height="280" rx="24" fill="#ece8e3"/>
+  <rect x="520" y="410" width="360" height="280" rx="24" fill="#ece8e3"/>
+  <rect x="920" y="410" width="360" height="280" rx="24" fill="#ece8e3"/>
+  <rect x="1320" y="410" width="120" height="280" rx="24" fill="#ece8e3"/>
+  <circle cx="300" cy="550" r="90" fill="#ff5b22" fill-opacity="0.35"/>
+  <circle cx="700" cy="550" r="90" fill="#aee6ed" fill-opacity="0.55"/>
+  <circle cx="1100" cy="550" r="90" fill="#b8bfff" fill-opacity="0.6"/>
+  <text x="120" y="170" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#5a5450">README VISUAL PLACEHOLDER</text>
+  <text x="120" y="318" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700" fill="#f7f5f2">GALLERY ROUTE</text>
+  <text x="120" y="770" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#5a5450">Use a real screenshot of /gallery here when available.</text>
+</svg>

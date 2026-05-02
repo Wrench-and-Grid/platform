@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Home hero placeholder</title>
+  <desc id="desc">Placeholder image for the hero section screenshot.</desc>
+  <rect width="1600" height="900" fill="#f7f5f2"/>
+  <rect x="70" y="70" width="1460" height="760" rx="32" fill="#ffffff" stroke="#111010" stroke-opacity="0.12"/>
+  <rect x="120" y="120" width="1360" height="70" rx="18" fill="#f2eee9"/>
+  <rect x="120" y="240" width="760" height="220" rx="24" fill="#111010"/>
+  <rect x="930" y="240" width="420" height="420" rx="28" fill="#aee6ed"/>
+  <rect x="120" y="510" width="520" height="38" rx="12" fill="#ff5b22" fill-opacity="0.9"/>
+  <rect x="120" y="575" width="620" height="22" rx="11" fill="#d8d1cb"/>
+  <rect x="120" y="615" width="580" height="22" rx="11" fill="#d8d1cb"/>
+  <rect x="120" y="655" width="470" height="22" rx="11" fill="#d8d1cb"/>
+  <rect x="930" y="700" width="300" height="64" rx="24" fill="#111010"/>
+  <text x="120" y="165" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#5a5450">README VISUAL PLACEHOLDER</text>
+  <text x="120" y="340" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="700" fill="#f7f5f2">HOME HERO</text>
+  <text x="120" y="410" font-family="Arial, Helvetica, sans-serif" font-size="34" fill="#f7f5f2">Replace with an actual screenshot of the landing section.</text>
+  <text x="952" y="736" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#f7f5f2">Portrait / CTA Area</text>
+</svg>
