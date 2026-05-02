@@ -1,4 +1,5 @@
-import type { HTMLAttributes, ReactNode } from 'react'
+import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
+import { spacing } from '@repo/tokens'
 
 export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
@@ -6,11 +7,15 @@ export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function Container({ children, maxWidth = '72rem', style, ...props }: ContainerProps) {
+  const containerStyle: CSSProperties = {
+    width: '100%',
+    maxWidth,
+    marginInline: 'auto',
+    paddingInline: spacing['6'],
+    ...style,
+  }
   return (
-    <div
-      style={{ width: '100%', maxWidth, marginInline: 'auto', paddingInline: '1.5rem', ...style }}
-      {...props}
-    >
+    <div style={containerStyle} {...props}>
       {children}
     </div>
   )
