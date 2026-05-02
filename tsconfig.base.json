@@ -6,6 +6,5 @@
     "strict": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0"
   }
 }
