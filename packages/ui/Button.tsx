@@ -1,30 +1,31 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react'
+import { colors, spacing, radius } from '@repo/tokens'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
   variant?: 'primary' | 'secondary' | 'ghost'
 }
 
+const variants: Record<string, CSSProperties> = {
+  primary: { background: colors.ink.DEFAULT, color: colors.neutral[0] },
+  secondary: { background: colors.neutral[200], color: colors.ink.DEFAULT },
+  ghost: { background: 'transparent', color: 'inherit', border: '1px solid currentColor' },
+}
+
+const base: CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: `${spacing['2']} ${spacing['5']}`,
+  borderRadius: radius.md,
+  fontWeight: 500,
+  fontSize: '0.875rem',
+  cursor: 'pointer',
+  border: 'none',
+  transition: 'opacity 0.15s ease',
+}
+
 export function Button({ children, variant = 'primary', style, ...props }: ButtonProps) {
-  const base: React.CSSProperties = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '0.5rem 1.25rem',
-    borderRadius: '0.375rem',
-    fontWeight: 500,
-    fontSize: '0.875rem',
-    cursor: 'pointer',
-    border: 'none',
-    transition: 'opacity 0.15s ease',
-  }
-
-  const variants: Record<string, React.CSSProperties> = {
-    primary: { background: '#0f172a', color: '#fff' },
-    secondary: { background: '#e2e8f0', color: '#0f172a' },
-    ghost: { background: 'transparent', color: 'inherit', border: '1px solid currentColor' },
-  }
-
   return (
     <button style={{ ...base, ...variants[variant], ...style }} {...props}>
       {children}

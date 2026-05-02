@@ -1,0 +1,13 @@
+{
+  "name": "@repo/tokens",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./themes/base": "./themes/base.ts",
+    "./themes/grid": "./themes/grid.ts"
+  }
+}

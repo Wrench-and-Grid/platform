@@ -10,6 +10,9 @@ importers:
 
   apps/dg.lxd-portfolio:
     dependencies:
+      '@repo/tokens':
+        specifier: workspace:^
+        version: link:../../packages/tokens
       '@repo/ui':
         specifier: workspace:^
         version: link:../../packages/ui
@@ -77,6 +80,9 @@ importers:
 
   apps/grid-design:
     dependencies:
+      '@repo/tokens':
+        specifier: workspace:^
+        version: link:../../packages/tokens
       '@repo/ui':
         specifier: workspace:^
         version: link:../../packages/ui
@@ -129,11 +135,20 @@ importers:
 
   packages/config: {}
 
+  packages/tokens: {}
+
   packages/ui:
     dependencies:
+      '@repo/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       react:
         specifier: ^19.0.0
         version: 19.2.5
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.14
 
 packages:
 

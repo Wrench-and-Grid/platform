@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { fontFamily, shadows } from "@repo/tokens";
 
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
@@ -7,6 +8,7 @@ export default {
   },
   theme: {
     extend: {
+      // Colors stay as CSS-variable references — no change to visual output
       colors: {
         brand: {
           orange: "var(--clr-orange)",
@@ -21,14 +23,14 @@ export default {
         },
       },
       fontFamily: {
-        display: ["Bebas Neue", "sans-serif"],
-        serif: ["Fraunces", "serif"],
-        sans: ["DM Sans", "sans-serif"],
+        display: fontFamily.display,
+        serif: fontFamily.serif,
+        sans: fontFamily.sans,
       },
       boxShadow: {
-        frame: "0 32px 80px rgba(17, 16, 16, 0.12)",
-        mural: "0 36px 90px rgba(0, 0, 0, 0.28)",
-        editorial: "0 18px 42px rgba(17, 16, 16, 0.08)",
+        frame: shadows.frame,
+        mural: shadows.mural,
+        editorial: shadows.editorial,
       },
     },
   },
