@@ -17,15 +17,21 @@ jobs:
         with:
           version: 9
 
+      - name: Read Node version
+        id: nvmrc
+        run: echo "node-version=$(cat .nvmrc)" >> "$GITHUB_OUTPUT"
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ steps.nvmrc.outputs.node-version }}
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
+      - name: Lint all workspaces
+        run: pnpm lint
+
       - name: Build all apps
         run: pnpm build
-        
