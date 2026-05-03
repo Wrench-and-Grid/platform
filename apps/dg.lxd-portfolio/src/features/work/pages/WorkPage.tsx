@@ -56,7 +56,7 @@ export default function WorkPage() {
         {/* Logo absolutely centred within the fixed rail — same technique as home nav */}
         <Link to="/" className="nav-logo work-page-nav-logo" data-cursor="Home">
           <img
-            src="/daisy_g_logo.svg"
+            src="/dg_logo.svg"
             alt="Grid Design logo"
             className="nav-logo-mark"
             width="96"
