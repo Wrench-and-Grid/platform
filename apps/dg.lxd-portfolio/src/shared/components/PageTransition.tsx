@@ -1,3 +1,20 @@
+/**
+ * PageTransition — wraps a route's content in a Framer Motion `<motion.main>`
+ * that animates in/out based on the `kind` prop.
+ *
+ * Each `kind` maps to a distinct enter/exit personality:
+ * - `home`    — soft vertical slide (subtle, feels like scrolling into view)
+ * - `gallery` — scale + vertical slide (spatial depth, like opening a frame)
+ * - `work`    — horizontal slide (lateral navigation between archive and home)
+ *
+ * The component is consumed inside `<AnimatePresence mode="wait">` in App.tsx,
+ * which ensures the exit animation of the outgoing page completes before the
+ * entering page starts.
+ *
+ * @param children  - Page content to wrap.
+ * @param className - Optional CSS class forwarded to the `<motion.main>`.
+ * @param kind      - Transition personality key.
+ */
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 
@@ -21,9 +38,10 @@ const transitionStates = {
     exit: { opacity: 0, scale: 1.015, y: -10 },
   },
   work: {
-    initial: { clipPath: "inset(0 100% 0 0)", opacity: 0.35 },
-    animate: { clipPath: "inset(0 0 0 0)", opacity: 1 },
-    exit: { clipPath: "inset(0 0 0 100%)", opacity: 0.2 },
+    // opacity + x are GPU-composited — avoids layout repaints from clipPath
+    initial: { opacity: 0, x: 40 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -20 },
   },
 } satisfies Record<
   PageTransitionKind,

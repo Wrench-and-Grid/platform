@@ -1,3 +1,14 @@
+/**
+ * GrainFilter — injects an off-screen SVG `<defs>` block that defines two
+ * reusable CSS `filter` references:
+ *
+ * - `#grain`       — subtle noise overlay used via `filter: url(#grain)` on
+ *                    the `<body>` or page wrapper to give a tactile texture.
+ * - `#spray-rough` — displacement-based roughness used for ink/stamp effects.
+ *
+ * The element is `position: absolute` with zero dimensions so it takes no
+ * space in the layout, and `aria-hidden` so assistive tech ignores it.
+ */
 export default function GrainFilter() {
   return (
     <svg

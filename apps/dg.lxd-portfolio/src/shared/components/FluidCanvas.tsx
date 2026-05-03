@@ -953,6 +953,13 @@ export default function FluidCanvas({ className, interactionRegion }: FluidCanva
     let lastTime = Date.now();
     let colorTimer = 0;
     let disposed = false;
+    const isVisibleRef = { current: true };
+
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => { isVisibleRef.current = entry.isIntersecting; },
+      { threshold: 0 }
+    );
+    if (canvas) visibilityObserver.observe(canvas);
 
     initFBOs();
     primaryPointerRef.current = pointers[0];
@@ -961,6 +968,8 @@ export default function FluidCanvas({ className, interactionRegion }: FluidCanva
       if (disposed) return;
 
       animationFrame = window.requestAnimationFrame(render);
+
+      if (!isVisibleRef.current) return;
 
       const now = Date.now();
       const dt = Math.min((now - lastTime) / 1000, 0.016666);
@@ -1017,6 +1026,7 @@ export default function FluidCanvas({ className, interactionRegion }: FluidCanva
       primaryPointerRef.current = null;
       mouseTrackingRef.current = false;
       touchTrackingRef.current = false;
+      visibilityObserver.disconnect();
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mousemove", handleMouseMove);
