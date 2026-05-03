@@ -21,15 +21,6 @@ export type WorkItem = {
   tags: Array<{ label: string; className: string }>;
 };
 
-export type BlogPost = {
-  category: string;
-  categoryClassName: string;
-  date: string;
-  title: string;
-  excerpt: string;
-  thumb: ReactElement;
-};
-
 export const filters: GalleryCategory[] = ["All", "Painting", "Print", "Digital"];
 
 export const galleryItems: GalleryItem[] = [
@@ -159,57 +150,6 @@ export const workItems: WorkItem[] = [
       { label: "Fine Art", className: "work-tag work-tag--lavender" },
       { label: "Exhibition", className: "work-tag work-tag--yellow" },
     ],
-  },
-];
-
-export const blogPosts: BlogPost[] = [
-  {
-    category: "Process",
-    categoryClassName: "blog-cat blog-cat--yellow",
-    date: "March 12, 2025",
-    title: "Why I always start with analog before going digital",
-    excerpt:
-      "There's something irreplaceable about pencil and paper in the early stages of a project.",
-    thumb: (
-      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="300" fill="#aee6ed" />
-        <circle cx="200" cy="120" r="110" fill="#3939ff" opacity=".18" />
-        <rect x="0" y="180" width="400" height="120" fill="#ff5b22" opacity=".22" />
-        <circle cx="320" cy="80" r="50" fill="#f4f386" opacity=".58" />
-      </svg>
-    ),
-  },
-  {
-    category: "Nonprofit",
-    categoryClassName: "blog-cat blog-cat--aqua",
-    date: "Feb 5, 2025",
-    title: "Design for good: what mission-driven clients need most",
-    excerpt:
-      "Working with nonprofits isn't charity work - it's some of the most complex, high-stakes design you'll ever do.",
-    thumb: (
-      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="300" fill="#b8bfff" />
-        <circle cx="100" cy="200" r="120" fill="#ff5b22" opacity=".32" />
-        <rect x="200" y="0" width="200" height="300" fill="#3939ff" opacity=".13" />
-        <circle cx="300" cy="80" r="70" fill="#f7f5f2" opacity=".48" />
-      </svg>
-    ),
-  },
-  {
-    category: "Art",
-    categoryClassName: "blog-cat blog-cat--lavender",
-    date: "Jan 20, 2025",
-    title: "Color as a language: palettes that mean something",
-    excerpt:
-      "How I develop color systems that communicate mood, values, and intention.",
-    thumb: (
-      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="300" fill="#f4f386" opacity=".88" />
-        <circle cx="300" cy="180" r="130" fill="#ff5b22" opacity=".28" />
-        <circle cx="80" cy="80" r="80" fill="#3939ff" opacity=".15" />
-        <rect x="0" y="220" width="400" height="80" fill="#b8bfff" opacity=".38" />
-      </svg>
-    ),
   },
 ];
 

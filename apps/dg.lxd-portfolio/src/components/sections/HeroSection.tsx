@@ -22,7 +22,7 @@ export default function HeroSection({ onMountRegion }: HeroSectionProps) {
         <div className="hero-location">Based in New York</div>
       </div>
       <div className="hero-type-wrap">
-        <span className="hero-big">DAISY<span className="hero-inline-accent">//</span> G.</span>
+        <span className="hero-big">DAISY<span className="hero-inline-accent">/</span> G.</span>
       </div>
       <div className="hero-mid">
         <div className="hero-disciplines">

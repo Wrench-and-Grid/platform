@@ -27,8 +27,8 @@ export default function WorkPage() {
       : workItems.filter((item) => item.category === activeCategory);
 
   return (
-    <PageTransition kind="blog" className="route-page route-page--blog work-archive-page">
-      <header className="page-rail page-rail--blog">
+    <PageTransition kind="work" className="route-page route-page--archive work-archive-page">
+      <header className="page-rail page-rail--archive">
         <Link to={{ pathname: "/", hash: returnTo }} className="page-back" data-cursor="Back">
           Back
         </Link>
@@ -38,17 +38,17 @@ export default function WorkPage() {
         </Link>
       </header>
 
-      <section className="blog-page-hero">
+      <section className="archive-page-hero">
         <div className="page-kicker">Project Archive</div>
         <h1>SEE ALL WORK</h1>
         <p>
           Identity systems, campaign work, editorial commissions, and exhibitions organized
-          with the same clean editorial rhythm as the writing archive.
+          with a clean archive rhythm.
         </p>
       </section>
 
-      <div className="blog-page-grid">
-        <div className="blog-article-list">
+      <div className="archive-page-grid">
+        <div className="archive-item-list">
           {visibleWork.map((item) => (
             <WorkProjectRow key={item.slug} item={item} />
           ))}

@@ -87,9 +87,9 @@ export default function AboutSection() {
         </div>
         <div className="about-community-note">
           <div className="about-community-kicker">Community Focus</div>
-          <p>
+          {/* <p>
             GRID DESIGN partners with nonprofits, teams, and individuals to turn strategy into visuals people can actually feel and act on.
-          </p>
+          </p> */}
         </div>
       </div>
     </section>

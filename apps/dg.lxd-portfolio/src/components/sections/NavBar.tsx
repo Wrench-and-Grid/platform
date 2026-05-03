@@ -11,7 +11,6 @@ export default function NavBar() {
         <li><a href="#about">About Me</a></li>
         <li><Link to="/gallery" state={{ returnTo: "#gallery" }}>Gallery</Link></li>
         <li><Link to="/work" state={{ returnTo: "#work" }}>Works</Link></li>
-        <li><Link to="/blog" state={{ returnTo: "#blog" }}>Blog</Link></li>
       </ul>
       <a href="#contact" className="nav-contact">Contact Me</a>
     </nav>
