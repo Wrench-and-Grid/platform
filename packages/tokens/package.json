@@ -8,6 +8,7 @@
   "exports": {
     ".": "./index.ts",
     "./themes/base": "./themes/base.ts",
-    "./themes/grid": "./themes/grid.ts"
+    "./themes/grid": "./themes/grid.ts",
+    "./themes": "./themes/index.ts"
   }
 }

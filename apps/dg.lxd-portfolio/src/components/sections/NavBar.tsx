@@ -6,7 +6,6 @@ export default function NavBar() {
       <Link to="/" className="nav-logo">
         {/* <span>GRID</span>
         <span>DESIGN</span> */}
-        <img src="/logo.svg" alt="" className="nav-logo-mark" aria-hidden="true" />
       </Link>
       <ul className="nav-links">
         <li><a href="#about">About Me</a></li>
