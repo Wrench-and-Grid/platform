@@ -1,3 +1,9 @@
+/**
+ * FloatingLinkedIn — a branded LinkedIn badge rendered in the hero section.
+ *
+ * Opens Daisy's LinkedIn profile in a new tab. Marked with `data-cursor` so
+ * the custom cursor labels it "LinkedIn" on hover.
+ */
 export default function FloatingLinkedIn() {
   return (
     <a

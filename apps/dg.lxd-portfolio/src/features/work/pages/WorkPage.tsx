@@ -1,5 +1,22 @@
+/**
+ * WorkPage — full project archive page (`/work`).
+ *
+ * Layout:
+ * - Fixed rail nav with Back link and centered SVG logo.
+ * - Hero header with archive title and editorial description.
+ * - Two-column grid: scrollable project list on the left, sticky sidebar on
+ *   the right with category filters, capability tags, and a brief input.
+ *
+ * State:
+ * - `activeCategory` — drives which `WorkItem` entries are visible in the list.
+ *
+ * Navigation:
+ * - The `returnTo` hash is read from React Router location state so the Back
+ *   button scrolls the homepage to the section the user navigated from.
+ */
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import PageTransition from "../../../shared/components/PageTransition";
 import WorkProjectRow from "../components/WorkProjectRow";
 import WorkSidebar from "../components/WorkSidebar";
 import {
@@ -8,17 +25,19 @@ import {
   workItems,
   type WorkCategoryFilter,
 } from "../data/works";
-import PageTransition from "../../../shared/components/PageTransition";
-import RoutePageHeader from "../../../shared/components/RoutePageHeader";
 import useScrollToTop from "../../../shared/hooks/useScrollToTop";
-import { getReturnToHash } from "../../../shared/lib/navigation";
+
+type RouteState = {
+  returnTo?: `#${string}`;
+};
 
 export default function WorkPage() {
   useScrollToTop();
 
   const [activeCategory, setActiveCategory] = useState<WorkCategoryFilter>("All");
   const location = useLocation();
-  const returnTo = getReturnToHash(location.state, "#work");
+  const returnTo = ((location.state as RouteState | null)?.returnTo ?? "#work") as `#${string}`;
+
   const visibleWork =
     activeCategory === "All"
       ? workItems
@@ -26,13 +45,32 @@ export default function WorkPage() {
 
   return (
     <PageTransition kind="work" className="route-page route-page--archive work-archive-page">
-      <RoutePageHeader className="page-rail page-rail--archive" returnTo={returnTo} />
+      <nav className="work-page-rail" aria-label="Work archive navigation">
+        <Link
+          to={{ pathname: "/", hash: returnTo }}
+          className="page-back"
+          data-cursor="Back"
+        >
+          Back
+        </Link>
+        {/* Logo absolutely centred within the fixed rail — same technique as home nav */}
+        <Link to="/" className="nav-logo work-page-nav-logo" data-cursor="Home">
+          <img
+            src="/daisy_g_logo.svg"
+            alt="Grid Design logo"
+            className="nav-logo-mark"
+            width="96"
+            height="96"
+          />
+        </Link>
+      </nav>
 
       <section className="archive-page-hero">
         <div className="page-kicker">Project Archive</div>
         <h1>SEE ALL WORK</h1>
         <p>
-          LXD work, Brand Identity Strategy work and workshops organized.
+          Identity systems, campaign work, editorial commissions, and exhibitions organized
+          with a clean archive rhythm.
         </p>
       </section>
 

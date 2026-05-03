@@ -1,3 +1,18 @@
+/**
+ * WorkSidebar — sticky aside panel on the WorkPage archive.
+ *
+ * Contains:
+ * - An editorial pull-quote.
+ * - A short narrative description of the archive's scope.
+ * - Category filter pills that delegate selection up to WorkPage state.
+ * - A capabilities tag cloud derived from `latestWorkTags`.
+ * - A project brief input for lightweight in-page lead capture.
+ *
+ * @param activeCategory   - Currently selected filter (highlighted pill).
+ * @param categories       - Ordered list of filter options.
+ * @param onCategoryChange - Callback invoked when a filter pill is clicked.
+ * @param tags             - Flat list of capability tag labels.
+ */
 import type { WorkCategoryFilter } from "../data/works";
 
 type WorkSidebarProps = {
@@ -21,8 +36,8 @@ export default function WorkSidebar({
       </blockquote>
 
       <p className="work-sidebar-note">
-        A cross-section of workshops, LXD work, Social Media Strategy, and
-        campaign work built for clients and organizations with a clear point of view.
+        A cross-section of identity systems, editorial commissions, exhibitions, and
+        campaign work built for organizations with a clear point of view.
       </p>
 
       <div className="archive-sidebar-block">

@@ -1,3 +1,13 @@
+/**
+ * CustomCursor — replaces the native OS cursor on pointer-capable devices.
+ *
+ * Mounts only when both `(hover: hover)` and `(pointer: fine)` media queries
+ * match AND the user has not requested reduced motion. Adds/removes the
+ * `has-custom-cursor` class on `<html>` so CSS can hide the native cursor.
+ *
+ * Reads `data-cursor="<label>"` from the nearest ancestor element to display
+ * a contextual label (e.g. "Press", "Open", "Portrait").
+ */
 import { type CSSProperties, useEffect, useState } from "react";
 
 type CursorState = {
@@ -18,25 +28,14 @@ const DEFAULT_STATE: CursorState = {
   label: "",
 };
 
-function getCursorLabel(target: EventTarget | null) {
-  if (!(target instanceof HTMLElement)) {
-    return "";
-  }
+/** Walks up the DOM from `target` to find the nearest `data-cursor` label. */
+function getCursorLabel(target: EventTarget | null): string {
+  if (!(target instanceof HTMLElement)) return "";
 
   const customTarget = target.closest<HTMLElement>("[data-cursor]");
-
-  if (customTarget?.dataset.cursor) {
-    return customTarget.dataset.cursor;
-  }
-
-  if (target.closest("button")) {
-    return "Press";
-  }
-
-  if (target.closest("a")) {
-    return "Open";
-  }
-
+  if (customTarget?.dataset.cursor) return customTarget.dataset.cursor;
+  if (target.closest("button")) return "Press";
+  if (target.closest("a")) return "Open";
   return "";
 }
 
@@ -44,10 +43,9 @@ export default function CustomCursor() {
   const [enabled, setEnabled] = useState(false);
   const [cursor, setCursor] = useState<CursorState>(DEFAULT_STATE);
 
+  /** Determine whether the custom cursor should be active at all. */
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
+    if (typeof window === "undefined") return;
 
     const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -57,7 +55,6 @@ export default function CustomCursor() {
     };
 
     syncEnabled();
-
     mediaQuery.addEventListener("change", syncEnabled);
     motionQuery.addEventListener("change", syncEnabled);
 
@@ -67,63 +64,38 @@ export default function CustomCursor() {
     };
   }, []);
 
+  /** Attach/detach pointer event listeners when `enabled` changes. */
   useEffect(() => {
     if (!enabled) {
       document.documentElement.classList.remove("has-custom-cursor");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCursor(DEFAULT_STATE);
       return;
     }
 
     document.documentElement.classList.add("has-custom-cursor");
 
     const handleMove = (event: PointerEvent) => {
-      if (event.pointerType && event.pointerType !== "mouse") {
-        return;
-      }
-
-      setCursor((prev) => ({
-        ...prev,
-        x: event.clientX,
-        y: event.clientY,
-        visible: true,
-      }));
+      if (event.pointerType && event.pointerType !== "mouse") return;
+      setCursor((prev) => ({ ...prev, x: event.clientX, y: event.clientY, visible: true }));
     };
 
     const handlePointerOver = (event: PointerEvent) => {
-      if (event.pointerType && event.pointerType !== "mouse") {
-        return;
-      }
-
+      if (event.pointerType && event.pointerType !== "mouse") return;
       const label = getCursorLabel(event.target);
-
-      setCursor((prev) => ({
-        ...prev,
-        active: Boolean(label),
-        label,
-      }));
+      setCursor((prev) => ({ ...prev, active: Boolean(label), label }));
     };
 
     const handlePointerLeave = () => {
-      setCursor((prev) => ({
-        ...prev,
-        visible: false,
-        pressed: false,
-        active: false,
-        label: "",
-      }));
+      setCursor((prev) => ({ ...prev, visible: false, pressed: false, active: false, label: "" }));
     };
 
     const handlePointerDown = () => {
-      setCursor((prev) => ({
-        ...prev,
-        pressed: true,
-      }));
+      setCursor((prev) => ({ ...prev, pressed: true }));
     };
 
     const handlePointerUp = () => {
-      setCursor((prev) => ({
-        ...prev,
-        pressed: false,
-      }));
+      setCursor((prev) => ({ ...prev, pressed: false }));
     };
 
     window.addEventListener("pointermove", handleMove);
@@ -144,9 +116,7 @@ export default function CustomCursor() {
     };
   }, [enabled]);
 
-  if (!enabled) {
-    return null;
-  }
+  if (!enabled) return null;
 
   return (
     <div
@@ -159,12 +129,7 @@ export default function CustomCursor() {
       ]
         .filter(Boolean)
         .join(" ")}
-      style={
-        {
-          "--cursor-x": `${cursor.x}px`,
-          "--cursor-y": `${cursor.y}px`,
-        } as CSSProperties
-      }
+      style={{ "--cursor-x": `${cursor.x}px`, "--cursor-y": `${cursor.y}px` } as CSSProperties}
     >
       <div className="custom-cursor-pointer">
         <svg viewBox="0 0 24 32" aria-hidden="true">

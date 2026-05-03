@@ -1,6 +1,25 @@
+/**
+ * HeroSection — the full-viewport opening section of the homepage.
+ *
+ * Composition:
+ * - Meta bar (est. date + location)
+ * - Large display type with name and slash accent
+ * - Three-column mid row: discipline list | portrait + tagline | CTA
+ * - Scrolling impact strip with looped discipline statements
+ *
+ * The section element receives `ref={onMountRegion}` so the parent (HomePage)
+ * can pass the node to FluidCanvas as its pointer-interaction region — the
+ * fluid simulation only responds to pointer events within this element.
+ *
+ * @param onMountRegion - RefCallback invoked with the `<section>` DOM node
+ *                        once the component mounts (or null on unmount).
+ */
 import type { RefCallback } from "react";
-import heroImage from "../../../assets/hero.png";
 import FloatingLinkedIn from "../../../shared/components/FloatingLinkedIn";
+
+type HeroSectionProps = {
+  onMountRegion?: RefCallback<HTMLElement>;
+};
 
 const impactStatements = [
   "Nonprofit Program Management",
@@ -10,10 +29,6 @@ const impactStatements = [
   "Learning Design Impact",
 ];
 
-type HeroSectionProps = {
-  onMountRegion?: RefCallback<HTMLElement>;
-};
-
 export default function HeroSection({ onMountRegion }: HeroSectionProps) {
   return (
     <section className="hero" ref={onMountRegion}>
@@ -21,9 +36,11 @@ export default function HeroSection({ onMountRegion }: HeroSectionProps) {
         <div className="hero-counter">EST. 2023</div>
         <div className="hero-location">Based in New York</div>
       </div>
+
       <div className="hero-type-wrap">
-        <span className="hero-big">GRID <span className="hero-inline-accent">#</span> DESIGN</span>
+        <span className="hero-big">DAISY<span className="hero-inline-accent">/</span> G.</span>
       </div>
+
       <div className="hero-mid">
         <div className="hero-disciplines">
           <p>LXD</p>
@@ -31,19 +48,32 @@ export default function HeroSection({ onMountRegion }: HeroSectionProps) {
           <p>Visual Storytelling</p>
           <p>Illustration</p>
         </div>
+
         <div className="hero-photo-wrap">
           <div className="hero-photo" data-cursor="Portrait">
-            <img src={heroImage} alt="Daisy G. portrait" />
+            <img
+              src="/hero.webp"
+              alt="Daisy G. portrait"
+              fetchPriority="high"
+              decoding="async"
+              width="380"
+              height="507"
+            />
             <div className="hero-photo-label">Daisy G. | Creative Director</div>
           </div>
-          <p className="hero-tagline">Art that moves people to act, one mark at a time.</p>
+          <p className="hero-tagline">
+            Design that moves people&nbsp;&mdash; one deliberate mark, one mission at a time.
+          </p>
         </div>
+
         <div className="hero-right-col">
           <div className="hero-cta">
             <FloatingLinkedIn />
           </div>
         </div>
       </div>
+
+      {/* Looped ticker — items are duplicated to create a seamless infinite scroll */}
       <div className="hero-impact-strip" aria-label="Creative focus areas">
         <div className="hero-impact-track">
           {[...impactStatements, ...impactStatements].map((item, index) => (

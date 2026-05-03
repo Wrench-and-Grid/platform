@@ -1,10 +1,26 @@
+/**
+ * works.ts — data layer for the Work feature.
+ *
+ * Exports:
+ * - `WorkItem`            — full project record used in the archive list.
+ * - `workItems`           — complete ordered project catalogue.
+ * - `workShowcaseItems`   — first 4 items surfaced on the homepage showcase.
+ * - `featuredWorkItems`   — alias for the first 4 items (homepage hero use).
+ * - `workCategoryFilters` — ordered filter options for category pills.
+ * - `latestWorkTags`      — deduplicated tag labels (up to 8) for the sidebar.
+ */
+import GalleryImage from "../../../assets/gallery1.webp";
+import GalleryImage2 from "../../../assets/gallery2.webp";
+import GalleryImage3 from "../../../assets/gallery3.webp";
+import GalleryImage4 from "../../../assets/gallery4.webp";
+
 export type WorkTagTone = "aqua" | "lavender" | "orange" | "yellow";
+
 export type WorkCategory =
-  | "Learning Experience"
-  | "Workshop"
-  | "Exhibition"
-  | "Experience"
-  | "Identity";
+  | "Learning & Design"
+  | "Community Campaigns"
+  | "Brand Identity";
+
 export type WorkCategoryFilter = "All" | WorkCategory;
 
 export interface WorkTag {
@@ -13,62 +29,65 @@ export interface WorkTag {
 }
 
 export interface WorkItem {
+  /** URL slug used as the unique key and for future detail-page routing. */
+  slug: string;
+  /** Zero-padded display number (e.g. "01"). */
+  number: string;
+  title: string;
   category: WorkCategory;
   client: string;
-  description: string;
-  number: string;
-  role: string;
-  slug: string;
-  tags: WorkTag[];
-  title: string;
   year: string;
-  pdf: string;
+  role: string;
+  description: string;
+  /** Optional hero image URL. Falls back to abstract artwork when absent. */
+  imageUrl?: string;
+  tags: WorkTag[];
 }
 
 export const workItems: WorkItem[] = [
   {
-    slug: "react-essential-guide",
+    slug: "roots-campaign",
     number: "01",
-    title: "React Essential Guide",
-    category: "Learning Experience",
-    client: "Nieva Team",
-    year: "2024",
-    role: "Learning Experience Design",
-    pdf: "/ReactEssentialGuide.pdf",
+    title: "Roots Campaign",
+    category: "Community Campaigns",
+    client: "Earth Neighbors Initiative",
+    year: "2025",
+    role: "Identity + Campaign Direction",
     description:
-      "A structured React learning experience designed to guide learners through core concepts across 31 lessons and 4 modules.",
+      "Full brand identity and campaign design for an environmental nonprofit reaching 200K+ households across three states.",
+    imageUrl: GalleryImage,
     tags: [
-      { label: "Instructional Design", tone: "yellow" },
-      { label: "UX Learning", tone: "aqua" },
+      { label: "Nonprofit", tone: "yellow" },
+      { label: "Branding", tone: "aqua" },
     ],
   },
   {
-    slug: "applied-technology",
+    slug: "voices-in-print",
     number: "02",
-    title: "Applied Technology Workshop",
-    category: "Workshop",
-    client: "Corporación Garabato Inspira",
-    year: "2025",
-    role: "Workshop Facilitation",
-    pdf: "/AppliedTechnology.pdf",
+    title: "Voices in Print",
+    category: "Learning & Design",
+    client: "Reading Forward",
+    year: "2024",
+    role: "Editorial Illustration",
     description:
-      "A 45-minute applied technology workshop equipping small business owners with practical design principles to elevate their brand clarity, credibility, and communication—without needing formal design skills.",
+      "Editorial illustration series commissioned for a national literacy program, now in classrooms across 14 cities.",
+    imageUrl: GalleryImage2,
     tags: [
-      { label: "Instructional Design", tone: "lavender" },
-      { label: "Workshop", tone: "yellow" },
+      { label: "Illustration", tone: "lavender" },
+      { label: "Editorial", tone: "yellow" },
     ],
   },
   {
     slug: "meridian-identity-system",
     number: "03",
     title: "Meridian Identity System",
-    category: "Identity",
+    category: "Brand Identity",
     client: "Meridian Social Enterprise",
     year: "2025",
     role: "Visual System + Art Direction",
-    pdf: "/pdfs/ReactEssentialGuide.pdf",
     description:
       "Visual identity, art direction, and design system for a social enterprise focused on economic mobility.",
+    imageUrl: GalleryImage3,
     tags: [
       { label: "Identity", tone: "aqua" },
       { label: "Art Direction", tone: "orange" },
@@ -78,13 +97,13 @@ export const workItems: WorkItem[] = [
     slug: "open-ground-exhibition",
     number: "04",
     title: "Open Ground Exhibition",
-    category: "Exhibition",
+    category: "Learning & Design",
     client: "Harbor House Gallery",
     year: "2023",
     role: "Exhibition Design",
-    pdf: "/pdfs/ReactEssentialGuide.pdf",
     description:
       "A 12-piece fine art series exhibited in New York and Chicago, exploring themes of migration and belonging.",
+    imageUrl: GalleryImage4,
     tags: [
       { label: "Fine Art", tone: "lavender" },
       { label: "Exhibition", tone: "yellow" },
@@ -94,13 +113,13 @@ export const workItems: WorkItem[] = [
     slug: "city-block-mutual-aid-toolkit",
     number: "05",
     title: "City Block Mutual Aid Toolkit",
-    category: "Learning Experience",
+    category: "Community Campaigns",
     client: "Brooklyn Relief Network",
     year: "2026",
     role: "Campaign System + Toolkit Design",
-    pdf: "/pdfs/ReactEssentialGuide.pdf",
     description:
       "A portable visual kit for volunteers and organizers, built to scale fast across multilingual neighborhood events.",
+    imageUrl: GalleryImage,
     tags: [
       { label: "Outreach", tone: "orange" },
       { label: "Toolkit", tone: "aqua" },
@@ -110,13 +129,13 @@ export const workItems: WorkItem[] = [
     slug: "lantern-listening-tour",
     number: "06",
     title: "Lantern Listening Tour",
-    category: "Experience",
+    category: "Learning & Design",
     client: "The Listening Project",
     year: "2024",
     role: "Experience Design + Storytelling",
-    pdf: "/pdfs/ReactEssentialGuide.pdf",
     description:
       "A pop-up storytelling system translating interview recordings into posters, field notes, and a traveling installation.",
+    imageUrl: GalleryImage2,
     tags: [
       { label: "Experience", tone: "yellow" },
       { label: "Storytelling", tone: "lavender" },
@@ -126,15 +145,16 @@ export const workItems: WorkItem[] = [
 
 export const workCategoryFilters: WorkCategoryFilter[] = [
   "All",
-  "Learning Experience",
-  "Workshop",
-  "Identity",
-  "Exhibition",
-  "Experience",
+  "Learning & Design",
+  "Community Campaigns",
+  "Brand Identity",
 ];
 
+/** Unique tag labels across all work items, capped at 8 for sidebar display. */
 export const latestWorkTags = Array.from(
   new Set(workItems.flatMap((item) => item.tags.map((tag) => tag.label)))
 ).slice(0, 8);
 
 export const featuredWorkItems = workItems.slice(0, 4);
+
+export const workShowcaseItems = workItems.slice(0, 4);
