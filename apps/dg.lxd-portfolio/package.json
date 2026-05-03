@@ -12,6 +12,7 @@
   "dependencies": {
     "@repo/tokens": "workspace:^",
     "@repo/ui": "workspace:^",
+    "@vercel/speed-insights": "^2.0.0",
     "autoprefixer": "^10.4.27",
     "framer-motion": "^12.38.0",
     "postcss": "^8.5.8",
