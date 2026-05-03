@@ -703,30 +703,24 @@ section { padding: 5.4rem 2.5rem; border-bottom: 1px solid var(--border); }
 }
 
 /* ── ABOUT ─────────────────────────────────────────────── */
-#about {
-  display: grid;
-  grid-template-columns: 0.62fr 1fr;
-  gap: 3rem;
-  /* Vertically align portrait midpoint with the top quarter of the text block
-     so both leading edges feel anchored without the portrait dominating height */
-  align-items: start;
+#about { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 4.0rem; 
+  align-items: center; 
 }
 
 .about-left .s-label { margin-bottom: 2rem; }
-/* Flex column so the portrait is centered within its narrower column and
-   can be constrained independently of the column width */
-.about-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.about-left { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
 }
-
 .about-portrait {
-  position: relative;
-  /* Restored to original column width; aspect-ratio enforces a strict 1:1
-     square so all four carousel images have an identical visual footprint */
-  width: min(100%, 78%);
-  aspect-ratio: 1 / 1;
+  position: relative; 
+  width: 100%; 
+  aspect-ratio: 2/3; 
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(17, 16, 16, .1);
   transition: box-shadow .35s ease, transform .35s ease;
@@ -735,11 +729,64 @@ section { padding: 5.4rem 2.5rem; border-bottom: 1px solid var(--border); }
   transform: translateY(-4px);
   box-shadow: 0 32px 72px rgba(17, 16, 16, .15);
 }
-.about-portrait svg, .about-portrait img {
-  width: 100%; height: 100%; display: block; object-fit: cover;
-  transition: transform .5s ease;
+
+/* Fixed, translucent carousel controls */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--clr-ink);
+  border: none;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all .2s ease;
+  border-radius: 50%;
+  opacity: 0.5;
+  backdrop-filter: blur(4px);
 }
-.about-portrait:hover img { transform: scale(1.03); }
+.carousel-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
+  opacity: 0.8;
+  transform: translateY(-50%) scale(1.15);
+}
+.carousel-prev { left: 0.5rem; }
+.carousel-next { right: 0.5rem; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: .6rem;
+  z-index: 10;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 91, 34, 0.4);
+  border: 2px solid var(--clr-orange);
+  cursor: pointer;
+  transition: all .25s ease;
+  opacity: 0.6;
+}
+.dot.active {
+  background: var(--clr-orange);
+  transform: scale(1.2);
+  opacity: 1;
+  box-shadow: 0 4px 12px rgba(255, 91, 34, .38);
+}
+.dot:hover {
+  opacity: 0.8;
+}
 
 .about-right h2 {
   font-family: var(--font-display); font-size: clamp(2.8rem, 5vw, 5rem);
@@ -802,38 +849,62 @@ section { padding: 5.4rem 2.5rem; border-bottom: 1px solid var(--border); }
   animation: slideInFromRight 0.6s ease-in-out;
 }
 .carousel-btn {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  background: var(--clr-orange); color: var(--clr-off-white);
-  border: none; width: 36px; height: 36px; font-size: 1.1rem;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  z-index: 10; transition: all .22s ease; border-radius: 50%;
-  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--clr-ink);
+  border: none;
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all .2s ease;
+  border-radius: 50%;
   opacity: 0.5;
+  backdrop-filter: blur(4px);
 }
 .carousel-btn:hover {
-  background: var(--clr-blue); transform: translateY(-50%) scale(1.08);
-  box-shadow: 0 6px 14px rgba(57, 57, 255, 0.28);
-  opacity: 0.85;
+  background: rgba(255, 255, 255, 0.8);
+  opacity: 0.8;
+  transform: translateY(-50%) scale(1.15);
 }
-.carousel-prev { left: .75rem; }
-.carousel-next { right: .75rem; }
+.carousel-prev { left: 0.5rem; }
+.carousel-next { right: 0.5rem; }
 .carousel-dots {
-  position: absolute; bottom: .75rem; left: 50%; transform: translateX(-50%);
-  display: flex; gap: .5rem; z-index: 10;
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: .6rem;
+  z-index: 10;
   opacity: 0.5;
 }
 .dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: rgba(255, 91, 34, 0.4); border: 1.5px solid var(--clr-orange);
-  cursor: pointer; transition: all .25s ease;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 91, 34, 0.4);
+  border: 2px solid var(--clr-orange);
+  cursor: pointer;
+  transition: all .25s ease;
 }
 .dot.active {
   background: var(--clr-orange);
-  transform: scale(1.25);
+  transform: scale(1.2);
+  opacity: 1;
   box-shadow: 0 4px 12px rgba(255, 91, 34, .38);
   animation: pulseRing 1.8s ease-out infinite;
 }
-.dot:hover { background: var(--clr-orange); }
+.dot:hover {
+  background: var(--clr-orange);
+  opacity: 0.8;
+}
 
 @keyframes slideInFromRight {
   from { opacity: 0; transform: translateX(40px) scale(.98); }
