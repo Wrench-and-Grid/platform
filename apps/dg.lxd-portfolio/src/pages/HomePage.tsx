@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AboutSection from "../components/sections/AboutSection";
-import BlogSection from "../components/sections/BlogSection";
 import ContactSection from "../components/sections/ContactSection";
-import GallerySection from "../components/sections/GallerySection";
+// import GallerySection from "../components/sections/GallerySection";
 import HeroSection from "../components/sections/HeroSection";
 import NavBar from "../components/sections/NavBar";
 import ResumeStrip from "../components/sections/ResumeStrip";
-import SiteFooter from "../components/sections/SiteFooter";
-import WorkSection from "../components/sections/WorkSection";
-import { type GalleryCategory } from "../data/gallery";
+// import SiteFooter from "../components/sections/SiteFooter";
+import WorkShowcaseSection from "../components/sections/WorkShowcaseSection";
+// import WorkSection from "../components/sections/WorkSection";
+// import { type GalleryCategory } from "../data/gallery";
+import { type WorkCategoryFilter } from "../data/works";
 import useRevealOnScroll from "../hooks/useRevealOnScroll";
 
 type HomePageProps = {
@@ -17,10 +18,11 @@ type HomePageProps = {
 };
 
 export default function HomePage({ onFluidInteractionRegionChange }: HomePageProps) {
-  const [activeFilter, setActiveFilter] = useState<GalleryCategory>("All");
+  // const [activeFilter, setActiveFilter] = useState<GalleryCategory>("All");
+  const [activeWorkFilter, setActiveWorkFilter] = useState<WorkCategoryFilter>("All");
   const location = useLocation();
 
-  useRevealOnScroll(".blog-card, .work-item, .g-item, .about-right");
+  useRevealOnScroll(".work-item, .g-item, .about-right");
 
   useEffect(() => {
     if (!location.hash) {
@@ -43,12 +45,12 @@ export default function HomePage({ onFluidInteractionRegionChange }: HomePagePro
       <NavBar />
       <HeroSection onMountRegion={onFluidInteractionRegionChange} />
       <AboutSection />
-      <GallerySection activeFilter={activeFilter} onFilterChange={setActiveFilter} />
-      <WorkSection />
-      <BlogSection />
+      {/* <GallerySection activeFilter={activeFilter} onFilterChange={setActiveFilter} /> */}
+      <WorkShowcaseSection activeFilter={activeWorkFilter} onFilterChange={setActiveWorkFilter} />
+      {/* <WorkSection /> */}
       <ResumeStrip />
       <ContactSection />
-      <SiteFooter />
+      {/* <SiteFooter /> */}
     </>
   );
 }

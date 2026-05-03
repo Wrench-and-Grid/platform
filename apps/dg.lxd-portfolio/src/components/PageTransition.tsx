@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-type PageTransitionKind = "blog" | "gallery" | "home" | "work";
+type PageTransitionKind = "gallery" | "home" | "work";
 
 type PageTransitionProps = {
   children: ReactNode;
@@ -24,11 +24,6 @@ const transitionStates = {
     initial: { clipPath: "inset(0 100% 0 0)", opacity: 0.35 },
     animate: { clipPath: "inset(0 0 0 0)", opacity: 1 },
     exit: { clipPath: "inset(0 0 0 100%)", opacity: 0.2 },
-  },
-  blog: {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    exit: { opacity: 0 },
   },
 } satisfies Record<
   PageTransitionKind,

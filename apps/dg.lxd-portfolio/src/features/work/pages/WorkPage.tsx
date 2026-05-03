@@ -25,10 +25,10 @@ export default function WorkPage() {
       : workItems.filter((item) => item.category === activeCategory);
 
   return (
-    <PageTransition kind="blog" className="route-page route-page--blog work-archive-page">
-      <RoutePageHeader className="page-rail page-rail--blog" returnTo={returnTo} />
+    <PageTransition kind="work" className="route-page route-page--archive work-archive-page">
+      <RoutePageHeader className="page-rail page-rail--archive" returnTo={returnTo} />
 
-      <section className="blog-page-hero">
+      <section className="archive-page-hero">
         <div className="page-kicker">Project Archive</div>
         <h1>SEE ALL WORK</h1>
         <p>
@@ -36,8 +36,8 @@ export default function WorkPage() {
         </p>
       </section>
 
-      <div className="blog-page-grid">
-        <div className="blog-article-list">
+      <div className="archive-page-grid">
+        <div className="archive-item-list">
           {visibleWork.map((item) => (
             <WorkProjectRow key={item.slug} item={item} />
           ))}

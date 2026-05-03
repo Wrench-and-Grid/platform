@@ -14,8 +14,8 @@ export default function WorkSidebar({
   tags,
 }: WorkSidebarProps) {
   return (
-    <aside className="blog-sidebar work-sidebar">
-      <blockquote className="blog-sidebar-quote">
+    <aside className="archive-sidebar work-sidebar">
+      <blockquote className="archive-sidebar-quote">
         &ldquo;The strongest projects carry both strategy and feeling. I want the work to
         do its job and leave a mark.&rdquo;
       </blockquote>
@@ -25,14 +25,14 @@ export default function WorkSidebar({
         campaign work built for clients and organizations with a clear point of view.
       </p>
 
-      <div className="blog-sidebar-block">
-        <div className="blog-sidebar-label">Project Type</div>
-        <div className="blog-sidebar-pills">
+      <div className="archive-sidebar-block">
+        <div className="archive-sidebar-label">Project Type</div>
+        <div className="archive-sidebar-pills">
           {categories.map((category) => (
             <button
               key={category}
               type="button"
-              className={`blog-filter-pill ${activeCategory === category ? "is-active" : ""}`}
+              className={`archive-filter-pill ${activeCategory === category ? "is-active" : ""}`}
               onClick={() => onCategoryChange(category)}
             >
               {category}
@@ -41,27 +41,27 @@ export default function WorkSidebar({
         </div>
       </div>
 
-      <div className="blog-sidebar-block">
-        <div className="blog-sidebar-label">Capabilities</div>
-        <div className="blog-sidebar-tags">
+      <div className="archive-sidebar-block">
+        <div className="archive-sidebar-label">Capabilities</div>
+        <div className="archive-sidebar-tags">
           {tags.map((tag) => (
             <span key={tag}>{tag}</span>
           ))}
         </div>
       </div>
 
-      <form className="blog-subscribe">
-        <label className="blog-sidebar-label" htmlFor="work-brief">
+      <form className="archive-brief">
+        <label className="archive-sidebar-label" htmlFor="work-brief">
           Project Brief
         </label>
-        <div className="blog-subscribe-row">
+        <div className="archive-brief-row">
           <input
             id="work-brief"
             type="text"
-            className="blog-subscribe-input"
+            className="archive-brief-input"
             placeholder="Tell me what you're building"
           />
-          <button type="button" className="blog-subscribe-submit" aria-label="Submit project brief">
+          <button type="button" className="archive-brief-submit" aria-label="Submit project brief">
             &rarr;
           </button>
         </div>

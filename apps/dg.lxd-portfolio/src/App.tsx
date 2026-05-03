@@ -5,7 +5,6 @@ import CustomCursor from "./components/CustomCursor";
 import FluidCanvas from "./components/FluidCanvas";
 // import FloatingLinkedIn from "./components/FloatingLinkedIn";
 import GrainFilter from "./components/GrainFilter";
-import BlogPage from "./pages/BlogPage";
 import GalleryPage from "./pages/GalleryPage";
 import HomePage from "./pages/HomePage";
 import WorkPage from "./pages/WorkPage";
@@ -38,7 +37,6 @@ export default function App() {
           />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/work" element={<WorkPage />} />
-          <Route path="/blog" element={<BlogPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>

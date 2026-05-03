@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { type GalleryCategory } from "../../gallery/data/gallery";
 import useRevealOnScroll from "../hooks/useRevealOnScroll";
 import AboutSection from "../sections/AboutSection";
-import BlogSection from "../sections/BlogSection";
 import ContactSection from "../sections/ContactSection";
 import GallerySection from "../sections/GallerySection";
 import HeroSection from "../sections/HeroSection";
@@ -20,7 +19,7 @@ export default function HomePage({ onFluidInteractionRegionChange }: HomePagePro
   const [activeFilter, setActiveFilter] = useState<GalleryCategory>("All");
   const location = useLocation();
 
-  useRevealOnScroll(".blog-card, .work-item, .g-item, .about-right");
+  useRevealOnScroll(".work-item, .g-item, .about-right");
 
   useEffect(() => {
     if (!location.hash) {
@@ -45,7 +44,6 @@ export default function HomePage({ onFluidInteractionRegionChange }: HomePagePro
       <AboutSection />
       <GallerySection activeFilter={activeFilter} onFilterChange={setActiveFilter} />
       <WorkSection />
-      <BlogSection />
       <ResumeStrip />
       <ContactSection />
       <SiteFooter />

@@ -22,11 +22,6 @@ export default function NavBar() {
             Works
           </RouteEntryLink>
         </li>
-        <li>
-          <RouteEntryLink to="/blog" returnTo="#blog" className="section-route-link">
-            Blog
-          </RouteEntryLink>
-        </li>
       </ul>
       <a href="#contact" className="nav-contact">
         Contact Me
