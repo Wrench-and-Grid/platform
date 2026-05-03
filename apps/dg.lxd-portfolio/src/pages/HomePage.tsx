@@ -9,7 +9,7 @@ import ResumeStrip from "../components/sections/ResumeStrip";
 // import SiteFooter from "../components/sections/SiteFooter";
 import WorkShowcaseSection from "../components/sections/WorkShowcaseSection";
 // import WorkSection from "../components/sections/WorkSection";
-import { type GalleryCategory } from "../data/gallery";
+// import { type GalleryCategory } from "../data/gallery";
 import { type WorkCategoryFilter } from "../data/works";
 import useRevealOnScroll from "../hooks/useRevealOnScroll";
 
@@ -18,7 +18,7 @@ type HomePageProps = {
 };
 
 export default function HomePage({ onFluidInteractionRegionChange }: HomePageProps) {
-  const [activeFilter, setActiveFilter] = useState<GalleryCategory>("All");
+  // const [activeFilter, setActiveFilter] = useState<GalleryCategory>("All");
   const [activeWorkFilter, setActiveWorkFilter] = useState<WorkCategoryFilter>("All");
   const location = useLocation();
 
