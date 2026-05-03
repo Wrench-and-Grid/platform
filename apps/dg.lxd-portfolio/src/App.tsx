@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import CustomCursor from "./components/CustomCursor";
 import FluidCanvas from "./components/FluidCanvas";
 // import FloatingLinkedIn from "./components/FloatingLinkedIn";
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>
+      <SpeedInsights />
     </>
   );
 }
