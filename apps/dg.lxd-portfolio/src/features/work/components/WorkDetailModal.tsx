@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { WorkItem } from "../data/works";
@@ -108,10 +107,7 @@ export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps)
                         onClick={() => setActivePdf({ url: pdf.url, title: pdf.label })}
                         aria-label={`Open PDF: ${pdf.label}`}
                       >
-                        <div className="wdm-pdf-thumb-icon">
-                          <FileText size={28} />
-                        </div>
-                        <span className="wdm-pdf-thumb-name">{pdf.label}</span>
+                        Open PDF
                       </button>
                     ))}
                   </div>

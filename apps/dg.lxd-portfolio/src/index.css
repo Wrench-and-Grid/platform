@@ -1325,18 +1325,15 @@ footer {
   animation: slideDown .75s cubic-bezier(.22, 1, .36, 1) both;
 }
 
-/* Logo is pinned to the horizontal and vertical centre of the
-   fixed rail — mirrors how .nav-menu is centred in the home nav */
+/* Logo sits at the far right of the rail, matching the inline
+   alignment behaviour of the logo in the home Navbar. */
 .work-page-nav-logo {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  margin-left: auto;
+  align-self: center;
 }
 
 @media (max-width: 700px) {
   .work-page-rail { padding: 1rem 1.5rem; }
-  .work-page-nav-logo .nav-logo-mark { width: clamp(7rem, 38vw, 11rem); }
 }
 
 .route-page--gallery {
@@ -2242,6 +2239,7 @@ footer {
    .archive-item-issue { font-size: 2.4rem; }
 
    /* Work showcase mobile adjustments */
+   .work-showcase-entry { margin-top: 1.5rem; }
    .work-showcase-head {
      flex-direction: column;
      align-items: flex-start;
