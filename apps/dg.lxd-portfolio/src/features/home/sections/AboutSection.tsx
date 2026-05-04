@@ -11,12 +11,17 @@
  * - Images use `loading="lazy"` since this section is below the fold.
  */
 import { useState, useEffect } from "react";
-import aboutImage from "../../../assets/carousel1.webp";
-import aboutImage2 from "../../../assets/carousel2.webp";
-import aboutImage3 from "../../../assets/carousel3.webp";
-import aboutImage4 from "../../../assets/carousel4.webp";
+import aboutImage from "../../../assets/Carousel01.jpg";
+import aboutImage2 from "../../../assets/Carousel02.jpg";
+import aboutImage3 from "../../../assets/Carousel03.jpg";
+import aboutImage4 from "../../../assets/Carousel04.jpg";
+import aboutImage5 from "../../../assets/Carousel05.jpg";
+import aboutImage6 from "../../../assets/Carousel06.jpg";
+import aboutImage7 from "../../../assets/Carousel07.jpg";
+import aboutImage8 from "../../../assets/Carousel08.jpg";
+import aboutImage9 from "../../../assets/Carousel09.jpg";
 
-const aboutImages = [aboutImage, aboutImage2, aboutImage3, aboutImage4];
+const aboutImages = [aboutImage, aboutImage2, aboutImage3, aboutImage4, aboutImage5, aboutImage6, aboutImage7, aboutImage8, aboutImage9];
 const AUTO_ADVANCE_MS = 7000;
 
 export default function AboutSection() {
@@ -88,20 +93,18 @@ export default function AboutSection() {
           ROOTED IN <em>purpose.</em>
         </h2>
         <p className="about-body">
-          I&apos;m Daisy Gonzalez - a Creative Director, Communicator and Learning Experience
-          Designer with a deep commitment to mission-driven work. My craft sits at the
-          intersection of design, storytelling, and social impact, helping nonprofits, brands,
-          and changemakers communicate what matters most.
+          I&apos;m Daisy Gonzalez - a Learning Experience Designer, Creative Director, and Communicator
+          drawn to work that has meaning behind it. I care about how ideas are shaped, how they’re 
+          understood, and what they make people feel.
         </p>
         <p className="about-body">
-          Whether I&apos;m crafting a campaign, developing a visual identity, or building a
-          learning experience, I bring the same conviction: design and systems aren&apos;t
-          opposites. Thoughtful communication can move people to act.
+          My work lives in that space between structure and story—where clarity, intention, and design 
+          come together to help people connect, learn, and move forward.
         </p>
 
         <div className="about-stats">
           <div className="stat-item">
-            <div className="stat-num">2+</div>
+            <div className="stat-num">3+</div>
             <div className="stat-label">Years of practice</div>
           </div>
           <div className="stat-item">
@@ -109,24 +112,24 @@ export default function AboutSection() {
             <div className="stat-label">Clients &amp; partners</div>
           </div>
           <div className="stat-item">
-            <div className="stat-num">5+</div>
+            <div className="stat-num">3+</div>
             <div className="stat-label">Projects &amp; Designs</div>
           </div>
         </div>
 
         <div className="about-tags">
-          <span className="tag tag--yellow">Brand Identity</span>
-          <span className="tag tag--aqua">Campaign Design</span>
-          <span className="tag">Illustration</span>
-          <span className="tag">Art Direction</span>
-          <span className="tag">Nonprofit</span>
+          <span className="tag tag--yellow">Learning & Development</span>
+          <span className="tag tag--aqua">LXD</span>
+          <span className="tag">Startups</span>
+          <span className="tag">EdTech</span>
+          <span className="tag">Nonprofits</span>
           <span className="tag">Visual Storytelling</span>
-          <span className="tag">Editorial</span>
+          <span className="tag">Human-centered Design</span>
         </div>
 
-        <div className="about-community-note">
+        {/* <div className="about-community-note">
           <div className="about-community-kicker">Community Focus</div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
