@@ -22,14 +22,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import ValidationError
 
-from app.config import settings
-from app.database import init_db
-from app.rate_limit import limiter
-from app.routers.contact import (
+from app.core.config import settings
+from app.core.database import init_db
+from app.core.rate_limit import limiter
+from app.api.contact import (
     pydantic_error_to_response,
     request_validation_error_to_response,
     router as contact_router,
 )
+from app.api.resume import router as resume_router
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 
@@ -102,12 +103,13 @@ app.state.limiter = limiter
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
-    allow_methods=["POST", "OPTIONS"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type"],
     max_age=600,
 )
 
 app.include_router(contact_router)
+app.include_router(resume_router)
 
 
 # ── Exception handlers ────────────────────────────────────────────────────────

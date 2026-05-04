@@ -18,10 +18,10 @@
 import { lazy, Suspense, useCallback, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import CustomCursor from "./shared/components/CustomCursor";
-import GrainFilter from "./shared/components/GrainFilter";
+import CustomCursor from "./components/CustomCursor";
+import GrainFilter from "./components/GrainFilter";
 
-const FluidCanvas = lazy(() => import("./shared/components/FluidCanvas"));
+const FluidCanvas = lazy(() => import("./components/FluidCanvas"));
 const HomePage    = lazy(() => import("./features/home/pages/HomePage"));
 const WorkPage    = lazy(() => import("./features/work/pages/WorkPage"));
 

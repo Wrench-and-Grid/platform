@@ -1,72 +1,6 @@
-/**
- * ContactSection — homepage contact form with server submission.
- *
- * State is managed via `useReducer` to keep all form + async status logic in
- * one predictable transition table instead of multiple `useState` calls.
- *
- * Submission flow:
- * 1. `SUBMIT_START` — disables all inputs and shows a sending state.
- * 2. `fetch` POSTs JSON to `${VITE_API_URL}/api/v1/contact`.
- * 3. On HTTP 2xx → `SUBMIT_SUCCESS` — clears fields, shows success banner.
- * 4. On HTTP error → `SUBMIT_ERROR` — surfaces the API's first validation
- *    error message, or a generic fallback.
- * 5. On network failure → `SUBMIT_ERROR` with a connection error message.
- *
- * The `VITE_API_URL` env var defaults to `http://localhost:8000` so the form
- * works out of the box against the local FastAPI dev server.
- */
 import { useCallback, useId, useReducer } from "react";
-
-// ── Types ────────────────────────────────────────────────────────────────────
-
-type FormFields = {
-  name: string;
-  email: string;
-  type: string;
-  message: string;
-};
-
-type SubmitStatus = "idle" | "sending" | "success" | "error";
-
-type State = {
-  fields: FormFields;
-  status: SubmitStatus;
-  serverError: string;
-};
-
-type Action =
-  | { type: "SET_FIELD"; field: keyof FormFields; value: string }
-  | { type: "SUBMIT_START" }
-  | { type: "SUBMIT_SUCCESS" }
-  | { type: "SUBMIT_ERROR"; message: string }
-  | { type: "RESET" };
-
-// ── Reducer ──────────────────────────────────────────────────────────────────
-
-const INITIAL_FIELDS: FormFields = { name: "", email: "", type: "", message: "" };
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case "SET_FIELD":
-      return { ...state, fields: { ...state.fields, [action.field]: action.value } };
-    case "SUBMIT_START":
-      return { ...state, status: "sending", serverError: "" };
-    case "SUBMIT_SUCCESS":
-      return { fields: INITIAL_FIELDS, status: "success", serverError: "" };
-    case "SUBMIT_ERROR":
-      return { ...state, status: "error", serverError: action.message };
-    case "RESET":
-      return { fields: INITIAL_FIELDS, status: "idle", serverError: "" };
-    default:
-      return state;
-  }
-}
-
-// ── Constants ────────────────────────────────────────────────────────────────
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
-
-// ── Component ────────────────────────────────────────────────────────────────
+import { INITIAL_FIELDS, reducer, type ContactApiRequest, type ContactApiResponse, type FormFields } from "./contactReducer";
+import { API_URL } from "../../../lib/api";
 
 export default function ContactSection() {
   const id = useId();
@@ -103,14 +37,10 @@ export default function ContactSection() {
             email: fields.email.trim(),
             subject: fields.type || undefined,
             message: fields.message.trim(),
-          }),
+          } satisfies ContactApiRequest),
         });
 
-        const data: {
-          success: boolean;
-          message?: string;
-          errors?: { field: string; message: string }[];
-        } = await res.json();
+        const data: ContactApiResponse = await res.json();
 
         if (!res.ok) {
           const msg =

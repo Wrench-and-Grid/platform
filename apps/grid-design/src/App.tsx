@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
-import NavBar from './components/NavBar'
-import HeroSection from './components/HeroSection'
-import WorkSection from './components/WorkSection'
-import BlogSection from './components/BlogSection'
-import SiteFooter from './components/SiteFooter'
+import NavBar from './features/home/sections/NavBar'
+import HeroSection from './features/home/sections/HeroSection'
+import WorkSection from './features/home/sections/WorkSection'
+import BlogSection from './features/home/sections/BlogSection'
+import SiteFooter from './features/home/sections/SiteFooter'
 import GalleryPage from './features/gallery/pages/GalleryPage'
 
 function HomePage() {

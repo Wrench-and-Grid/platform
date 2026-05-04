@@ -3,7 +3,7 @@ import GalleryImage2 from "../../../assets/gallery2.webp";
 import GalleryImage3 from "../../../assets/gallery3.webp";
 import GalleryImage4 from "../../../assets/gallery4.webp";
 import GalleryImage5 from "../../../assets/gallery5.webp";
-import type { ArtworkVariant } from "../../../shared/types/artwork";
+import type { ArtworkVariant } from "../../../lib/artwork";
 
 export type GalleryCategory = "All" | "Painting" | "Print" | "Digital";
 

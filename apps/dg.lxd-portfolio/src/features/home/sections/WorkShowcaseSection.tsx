@@ -13,7 +13,7 @@
  * @param activeFilter   - Currently selected category filter.
  * @param onFilterChange - Callback to update the active filter in the parent.
  */
-import RouteEntryLink from "../../../shared/components/RouteEntryLink";
+import RouteEntryLink from "../../../components/RouteEntryLink";
 import {
   workCategoryFilters,
   workShowcaseItems,

@@ -1,17 +1,9 @@
-/**
- * ResumeStrip — a full-width availability banner with a PDF download button.
- *
- * The download uses `useFileDownload` to fetch the PDF as a Blob and trigger
- * a native browser save dialog. Falls back to `window.open` if the fetch fails.
- *
- * The PDF must be present at `public/Daisy_Gonzalez_Resume.pdf` so Vite
- * serves it at the static path `/Daisy_Gonzalez_Resume.pdf`.
- */
-import { useFileDownload } from "../../../shared/hooks/useFileDownload";
+import { useFileDownload } from "../../../hooks/useFileDownload";
+import { API_URL } from "../../../lib/api";
 
 export default function ResumeStrip() {
   const { download, isDownloading } = useFileDownload(
-    "/Daisy_Gonzalez_Resume.pdf",
+    `${API_URL}/api/v1/resume`,
     "Daisy-Gonzalez-Resume.pdf"
   );
 

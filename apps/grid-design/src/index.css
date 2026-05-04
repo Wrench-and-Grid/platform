@@ -19,15 +19,6 @@
   --font-serif: 'Fraunces', serif;
   --font-sans: 'DM Sans', sans-serif;
 
-  --gd-accent:      #0057ff;
-  --gd-accent-dark: #0040cc;
-  --gd-bg:          #ffffff;
-  --gd-surface:     #f4f4f6;
-  --gd-border:      #e2e2e7;
-  --gd-text:        #0a0a0f;
-  --gd-text-mid:    #64647a;
-  --gd-text-light:  #a0a0b0;
-
   color-scheme: light;
   font-family: var(--font-sans);
   font-size: 16px;
@@ -106,7 +97,7 @@ a {
   text-decoration: none;
   transition: color 0.15s ease;
 }
-.gd-nav-link:hover { color: var(--gd-text) !important; }
+.gd-nav-link:hover { color: #0a0a0f !important; }
 
 .gd-nav-cta {
   transition: opacity 0.15s ease;

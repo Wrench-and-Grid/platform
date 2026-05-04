@@ -15,7 +15,7 @@
  *                        once the component mounts (or null on unmount).
  */
 import type { RefCallback } from "react";
-import FloatingLinkedIn from "../../../shared/components/FloatingLinkedIn";
+import FloatingLinkedIn from "../../../components/FloatingLinkedIn";
 
 type HeroSectionProps = {
   onMountRegion?: RefCallback<HTMLElement>;
