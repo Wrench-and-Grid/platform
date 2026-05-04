@@ -1,22 +1,35 @@
-from __future__ import annotations
-
-import asyncio
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
+from app.database import AsyncSessionLocal, get_db
 from app.models import ContactSubmission
+from app.rate_limit import rate_limit_contact
 from app.schemas import ContactRequest, ContactResponse, ErrorDetail, ValidationErrorResponse
 from app.services.email import send_admin_notification
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1", tags=["contact"])
+
+
+async def _notify_and_flag(submission_id: int, name: str, email: str, subject: str | None, message: str) -> None:
+    """Background task: send admin email then update the email_sent flag."""
+    email_sent = await send_admin_notification(submission_id, name, email, subject, message)
+    if email_sent:
+        try:
+            async with AsyncSessionLocal() as session:
+                row = await session.get(ContactSubmission, submission_id)
+                if row:
+                    row.email_sent = True
+                    await session.commit()
+        except SQLAlchemyError:
+            logger.warning("Could not update email_sent flag for #%d", submission_id)
 
 
 def _client_ip(request: Request) -> str:
@@ -36,6 +49,7 @@ def _client_ip(request: Request) -> str:
     status_code=status.HTTP_201_CREATED,
     responses={
         422: {"model": ValidationErrorResponse, "description": "Validation failure"},
+        429: {"description": "Too many requests"},
         500: {"description": "Internal server error"},
     },
     summary="Submit a contact-form message",
@@ -43,7 +57,9 @@ def _client_ip(request: Request) -> str:
 async def submit_contact(
     payload: ContactRequest,
     request: Request,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
+    _: None = Depends(rate_limit_contact),
 ) -> ContactResponse:
     """
     Data flow
@@ -80,27 +96,18 @@ async def submit_contact(
 
     logger.info("Submission #%d persisted successfully", submission.id)
 
-    # ── 2. Notify (async, non-blocking) ──────────────────────────────────────
-    # We schedule the email as a background task so it never blocks the HTTP
-    # response.  The result is awaited immediately here but could also be handed
-    # to BackgroundTasks if latency becomes a concern at scale.
-    email_sent = await asyncio.wait_for(
-        send_admin_notification(
-            submission.id,
-            payload.name,
-            str(payload.email),
-            payload.subject,
-            payload.message,
-        ),
-        timeout=20,  # seconds — generous but bounded
+    # ── 2. Notify (true fire-and-forget via BackgroundTasks) ─────────────────
+    # The email is dispatched after the response is sent so SMTP latency never
+    # touches the client.  The background task opens its own DB session to
+    # update the email_sent flag once delivery is confirmed.
+    background_tasks.add_task(
+        _notify_and_flag,
+        submission.id,
+        payload.name,
+        str(payload.email),
+        payload.subject,
+        payload.message,
     )
-
-    if email_sent:
-        try:
-            submission.email_sent = True
-            await db.commit()
-        except SQLAlchemyError:
-            logger.warning("Could not update email_sent flag for #%d", submission.id)
 
     return ContactResponse(
         success=True,
@@ -109,16 +116,45 @@ async def submit_contact(
     )
 
 
-# ── Custom validation error handler ──────────────────────────────────────────
-# Registered on the app in main.py so Pydantic errors return our schema,
-# not FastAPI's default 422 body.
+# ── Validation error helpers ──────────────────────────────────────────────────
+# Two converters are needed because FastAPI and Pydantic raise different
+# exception types for the same kind of failure:
+#
+#   fastapi.exceptions.RequestValidationError  — raised by FastAPI when request
+#       body parsing fails (before the route handler is called).  Its .errors()
+#       method returns Pydantic v2 error dicts with loc prefixed by "body".
+#
+#   pydantic.ValidationError — raised inside a route handler when a Pydantic
+#       model is constructed manually.  Same dict shape, no "body" prefix.
+#
+# Both are registered on the app in main.py.
 
-def pydantic_error_to_response(exc: ValidationError) -> JSONResponse:
+def _loc_to_field(loc: tuple) -> str:
+    """Convert a Pydantic loc tuple to a dot-separated field name.
+
+    Strips the leading 'body' segment that FastAPI adds for request-body
+    errors so the frontend receives 'name' not 'body.name'.
+    """
+    parts = [str(p) for p in loc if p != "body"]
+    return ".".join(parts) if parts else "unknown"
+
+
+def _errors_to_response(error_list: list[dict]) -> JSONResponse:
     errors = [
-        ErrorDetail(field=".".join(str(loc) for loc in e["loc"]), message=e["msg"])
-        for e in exc.errors()
+        ErrorDetail(field=_loc_to_field(e["loc"]), message=e["msg"])
+        for e in error_list
     ]
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content=ValidationErrorResponse(errors=errors).model_dump(),
     )
+
+
+def request_validation_error_to_response(exc: RequestValidationError) -> JSONResponse:
+    """Handles FastAPI's RequestValidationError (raised during body parsing)."""
+    return _errors_to_response(exc.errors())
+
+
+def pydantic_error_to_response(exc: ValidationError) -> JSONResponse:
+    """Handles pydantic.ValidationError raised inside a route handler."""
+    return _errors_to_response(exc.errors())

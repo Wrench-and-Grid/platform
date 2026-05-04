@@ -22,6 +22,12 @@
       ]
     },
     {
+      "source": "/(favicon.*|apple-touch-icon.*|android-chrome.*|site\\.webmanifest)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=604800" }
+      ]
+    },
+    {
       "source": "/(.*)\\.pdf",
       "headers": [
         { "key": "Cache-Control",        "value": "public, max-age=86400" },
@@ -31,7 +37,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!assets|favicon\\.svg|icons\\.svg|daisy_g_logo\\.svg|hero\\.webp|.*\\.pdf).*)",
+      "source": "/((?!assets/)(?!.*\\.(?:svg|png|ico|webp|pdf|webmanifest|json)$).+)",
       "destination": "/index.html"
     }
   ]

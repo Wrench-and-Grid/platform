@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     @field_validator("cors_origins", mode="before")
     @classmethod
     def parse_cors(cls, v: str | list[str]) -> list[str]:
+        # pydantic-settings parses JSON arrays natively; this handles any
+        # raw string that slips through (e.g. plain CSV in programmatic use).
         if isinstance(v, str):
             return [o.strip() for o in v.split(",") if o.strip()]
         return v

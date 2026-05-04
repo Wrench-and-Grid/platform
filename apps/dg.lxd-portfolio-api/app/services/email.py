@@ -31,6 +31,10 @@ def _plain_body(
     )
 
 
+def _escape(text: str) -> str:
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
 def _html_body(
     submission_id: int,
     name: str,
@@ -38,17 +42,20 @@ def _html_body(
     subject: str | None,
     message: str,
 ) -> str:
-    safe_message = message.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    safe_name = _escape(name)
+    safe_email = _escape(email)
+    safe_subject = _escape(subject) if subject else "—"
+    safe_message = _escape(message)
     return f"""
 <html><body style="font-family:sans-serif;color:#111010;max-width:600px">
   <h2 style="color:#ff5b22">New contact — #{submission_id}</h2>
   <table cellpadding="8" style="border-collapse:collapse;width:100%">
     <tr><th align="left" style="background:#f7f5f2;width:90px">Name</th>
-        <td>{name}</td></tr>
+        <td>{safe_name}</td></tr>
     <tr><th align="left" style="background:#f7f5f2">Email</th>
-        <td><a href="mailto:{email}">{email}</a></td></tr>
+        <td><a href="mailto:{safe_email}">{safe_email}</a></td></tr>
     <tr><th align="left" style="background:#f7f5f2">Subject</th>
-        <td>{subject or '—'}</td></tr>
+        <td>{safe_subject}</td></tr>
   </table>
   <h3 style="margin-top:1.5rem">Message</h3>
   <p style="white-space:pre-wrap;background:#f7f5f2;padding:1rem">{safe_message}</p>
