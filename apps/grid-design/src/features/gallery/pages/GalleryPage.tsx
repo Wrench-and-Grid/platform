@@ -1,10 +1,10 @@
 import { useLocation } from "react-router-dom";
 import GalleryRoom from "../components/GalleryRoom";
 import { galleryItems } from "../data/gallery";
-import PageTransition from "../../../shared/components/PageTransition";
-import RoutePageHeader from "../../../shared/components/RoutePageHeader";
-import useScrollToTop from "../../../shared/hooks/useScrollToTop";
-import { getReturnToHash } from "../../../shared/lib/navigation";
+import PageTransition from "../../../components/PageTransition";
+import RoutePageHeader from "../../../components/RoutePageHeader";
+import useScrollToTop from "../../../hooks/useScrollToTop";
+import { getReturnToHash } from "../../../lib/navigation";
 
 export default function GalleryPage() {
   useScrollToTop();

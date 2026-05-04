@@ -5,7 +5,6 @@
  * - `WorkItem`            — full project record used in the archive list.
  * - `workItems`           — complete ordered project catalogue.
  * - `workShowcaseItems`   — first 4 items surfaced on the homepage showcase.
- * - `featuredWorkItems`   — alias for the first 4 items (homepage hero use).
  * - `workCategoryFilters` — ordered filter options for category pills.
  * - `latestWorkTags`      — deduplicated tag labels (up to 8) for the sidebar.
  */
@@ -154,7 +153,5 @@ export const workCategoryFilters: WorkCategoryFilter[] = [
 export const latestWorkTags = Array.from(
   new Set(workItems.flatMap((item) => item.tags.map((tag) => tag.label)))
 ).slice(0, 8);
-
-export const featuredWorkItems = workItems.slice(0, 4);
 
 export const workShowcaseItems = workItems.slice(0, 4);

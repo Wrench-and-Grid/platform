@@ -16,7 +16,7 @@
  */
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import PageTransition from "../../../shared/components/PageTransition";
+import PageTransition from "../../../components/PageTransition";
 import WorkProjectRow from "../components/WorkProjectRow";
 import WorkSidebar from "../components/WorkSidebar";
 import {
@@ -25,7 +25,7 @@ import {
   workItems,
   type WorkCategoryFilter,
 } from "../data/works";
-import useScrollToTop from "../../../shared/hooks/useScrollToTop";
+import useScrollToTop from "../../../hooks/useScrollToTop";
 
 type RouteState = {
   returnTo?: `#${string}`;

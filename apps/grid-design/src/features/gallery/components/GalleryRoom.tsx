@@ -1,5 +1,5 @@
 import type { GalleryItem } from "../data/gallery";
-import SpotlightFrame from "../../../shared/components/SpotlightFrame";
+import SpotlightFrame from "./SpotlightFrame";
 
 type GalleryRoomProps = {
   item: GalleryItem;

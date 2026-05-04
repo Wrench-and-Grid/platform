@@ -26,7 +26,7 @@ import NavBar from "../sections/NavBar";
 import ResumeStrip from "../sections/ResumeStrip";
 import WorkShowcaseSection from "../sections/WorkShowcaseSection";
 import { type WorkCategoryFilter } from "../../work/data/works";
-import useRevealOnScroll from "../../../shared/hooks/useRevealOnScroll";
+import useRevealOnScroll from "../../../hooks/useRevealOnScroll";
 
 type HomePageProps = {
   onFluidInteractionRegionChange: (node: HTMLElement | null) => void;
