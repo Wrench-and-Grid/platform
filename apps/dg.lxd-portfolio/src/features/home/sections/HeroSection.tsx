@@ -25,7 +25,7 @@ const impactStatements = [
   "I’m always thinking about how people experience what I make",
   "I try to create things people can actually connect with",
   "Good work should move people, even in small ways",
-  "I’m drawn to work that supports people and their communities",
+  "I’m drawn to work that sgit aupports people and their communities",
   "Clarity is one of the most underrated design choices",
 ];
 

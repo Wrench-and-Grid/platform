@@ -123,8 +123,9 @@ export const workItems: WorkItem[] = [
       "Designed and developed a learner-centered writing program that introduces young participants to storytelling and authorship through guided activities and creative exploration. The experience is designed to build confidence, voice, and self-expression.",
     imageUrl: FWImage03,
     tags: [
-      { label: "Identity", tone: "aqua" },
-      { label: "Art Direction", tone: "orange" },
+      { label: "Nonprofit", tone: "aqua" },
+      { label: "Workshop", tone: "orange" },
+      { label: "LXD", tone: "lavender" },
     ],
   },
   {
@@ -159,22 +160,22 @@ export const workItems: WorkItem[] = [
       { label: "Toolkit", tone: "aqua" },
     ],
   },
-  // {
-  //   slug: "lantern-listening-tour",
-  //   number: "06",
-  //   title: "Lantern Listening Tour",
-  //   category: "Learning & Design Work",
-  //   client: "The Listening Project",
-  //   year: "2024",
-  //   role: "Experience Design + Storytelling",
-  //   description:
-  //     "A pop-up storytelling system translating interview recordings into posters, field notes, and a traveling installation.",
-  //   imageUrl: FWImage06,
-  //   tags: [
-  //     { label: "Experience", tone: "yellow" },
-  //     { label: "Storytelling", tone: "lavender" },
-  //   ],
-  // },
+  {
+    slug: "lantern-listening-tour",
+    number: "06",
+    title: "Lantern Listening Tour",
+    category: "Learning & Design Work",
+    client: "The Listening Project",
+    year: "2024",
+    role: "Experience Design + Storytelling",
+    description:
+      "A pop-up storytelling system translating interview recordings into posters, field notes, and a traveling installation.",
+    imageUrl: FWImage05,
+    tags: [
+      { label: "Experience", tone: "yellow" },
+      { label: "Storytelling", tone: "lavender" },
+    ],
+  },
 ];
 
 export const workCategoryFilters: WorkCategoryFilter[] = [
