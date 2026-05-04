@@ -64,23 +64,6 @@ export default function WorkSidebar({
           ))}
         </div>
       </div>
-
-      <form className="archive-brief">
-        <label className="archive-sidebar-label" htmlFor="work-brief">
-          Project Brief
-        </label>
-        <div className="archive-brief-row">
-          <input
-            id="work-brief"
-            type="text"
-            className="archive-brief-input"
-            placeholder="Tell me what you're building"
-          />
-          <button type="button" className="archive-brief-submit" aria-label="Submit project brief">
-            &rarr;
-          </button>
-        </div>
-      </form>
     </aside>
   );
 }
