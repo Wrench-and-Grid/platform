@@ -9,6 +9,9 @@
  *
  * State:
  * - `activeCategory` — drives which `WorkItem` entries are visible in the list.
+ *   Initialised from `location.state.category` when navigating from the showcase.
+ * - `openSlug` — controls which item's detail modal is visible.
+ *   Initialised from `location.state.openSlug` when navigating from the showcase.
  *
  * Navigation:
  * - The `returnTo` hash is read from React Router location state so the Back
@@ -19,6 +22,7 @@ import { Link, useLocation } from "react-router-dom";
 import PageTransition from "../../../components/PageTransition";
 import WorkProjectRow from "../components/WorkProjectRow";
 import WorkSidebar from "../components/WorkSidebar";
+import WorkDetailModal from "../components/WorkDetailModal";
 import {
   latestWorkTags,
   workCategoryFilters,
@@ -29,19 +33,28 @@ import useScrollToTop from "../../../hooks/useScrollToTop";
 
 type RouteState = {
   returnTo?: `#${string}`;
+  category?: WorkCategoryFilter;
+  openSlug?: string;
 };
 
 export default function WorkPage() {
   useScrollToTop();
 
-  const [activeCategory, setActiveCategory] = useState<WorkCategoryFilter>("All");
   const location = useLocation();
-  const returnTo = ((location.state as RouteState | null)?.returnTo ?? "#work") as `#${string}`;
+  const state = location.state as RouteState | null;
+  const returnTo = state?.returnTo ?? "#work";
+
+  const [activeCategory, setActiveCategory] = useState<WorkCategoryFilter>(
+    state?.category ?? "All"
+  );
+  const [openSlug, setOpenSlug] = useState<string | null>(state?.openSlug ?? null);
 
   const visibleWork =
     activeCategory === "All"
       ? workItems
       : workItems.filter((item) => item.category === activeCategory);
+
+  const openItem = openSlug ? (workItems.find((i) => i.slug === openSlug) ?? null) : null;
 
   return (
     <PageTransition kind="work" className="route-page route-page--archive work-archive-page">
@@ -53,7 +66,6 @@ export default function WorkPage() {
         >
           Back
         </Link>
-        {/* Logo absolutely centred within the fixed rail — same technique as home nav */}
         <Link to="/" className="nav-logo work-page-nav-logo" data-cursor="Home">
           <img
             src="/dg_logo.svg"
@@ -77,7 +89,11 @@ export default function WorkPage() {
       <div className="archive-page-grid">
         <div className="archive-item-list">
           {visibleWork.map((item) => (
-            <WorkProjectRow key={item.slug} item={item} />
+            <WorkProjectRow
+              key={item.slug}
+              item={item}
+              onOpen={() => setOpenSlug(item.slug)}
+            />
           ))}
         </div>
 
@@ -88,6 +104,8 @@ export default function WorkPage() {
           tags={latestWorkTags}
         />
       </div>
+
+      <WorkDetailModal item={openItem} onClose={() => setOpenSlug(null)} />
     </PageTransition>
   );
 }
