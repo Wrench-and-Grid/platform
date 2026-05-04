@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { WorkItem } from "../data/works";
+import PdfViewerModal from "./PdfViewerModal";
 
 type WorkDetailModalProps = {
   item: WorkItem | null;
@@ -12,6 +14,7 @@ type WorkDetailModalProps = {
 
 export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const [activePdf, setActivePdf] = useState<{ url: string; title: string } | null>(null);
 
   useEffect(() => {
     if (!item) return;
@@ -26,7 +29,7 @@ export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps)
     };
   }, [item, onClose]);
 
-  return createPortal(
+  const portal = createPortal(
     <AnimatePresence>
       {item && (
         <motion.div
@@ -93,6 +96,28 @@ export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps)
                 <p className="wdm-description">{item.description}</p>
               </CardContent>
 
+              {item.pdfFiles && item.pdfFiles.length > 0 && (
+                <div className="wdm-pdf-section">
+                  <p className="wdm-pdf-label">Documents</p>
+                  <div className="wdm-pdf-grid">
+                    {item.pdfFiles.map((pdf) => (
+                      <button
+                        key={pdf.label}
+                        type="button"
+                        className="wdm-pdf-thumb"
+                        onClick={() => setActivePdf({ url: pdf.url, title: pdf.label })}
+                        aria-label={`Open PDF: ${pdf.label}`}
+                      >
+                        <div className="wdm-pdf-thumb-icon">
+                          <FileText size={28} />
+                        </div>
+                        <span className="wdm-pdf-thumb-name">{pdf.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <CardFooter className="wdm-tags">
                 {item.tags.map((tag) => (
                   <Badge key={tag.label} className={`archive-pill archive-pill--${tag.tone}`}>
@@ -106,5 +131,16 @@ export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps)
       )}
     </AnimatePresence>,
     document.body
+  );
+
+  return (
+    <>
+      {portal}
+      <PdfViewerModal
+        url={activePdf?.url ?? null}
+        title={activePdf?.title ?? ""}
+        onClose={() => setActivePdf(null)}
+      />
+    </>
   );
 }

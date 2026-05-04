@@ -7,12 +7,32 @@
  * - `workShowcaseItems`   — first 4 items surfaced on the homepage showcase.
  * - `workCategoryFilters` — ordered filter options for category pills.
  * - `latestWorkTags`      — deduplicated tag labels (up to 8) for the sidebar.
+ *
+ * PDF HOSTING (AWS S3 + CloudFront)
+ * ─────────────────────────────────
+ * 1. Set VITE_CDN_BASE_URL in your .env.local (dev) and Vercel env vars (prod).
+ *    Example: VITE_CDN_BASE_URL=https://cdn.yourdomain.com
+ *
+ * 2. Upload your PDFs to S3 under the key prefix "pdfs/":
+ *    s3://dg-lxd-portfolio-assets/pdfs/<filename>.pdf
+ *
+ * 3. Each pdfFiles entry below maps to:
+ *    ${CDN_BASE}/pdfs/<filename>.pdf
+ *    Replace <filename> with the exact S3 object key you uploaded.
+ *
+ * See docs/aws-pdf-hosting.md for the full S3 + CloudFront setup guide.
  */
 import FWImage01 from "../../../assets/FWImage01.jpg";
 import FWImage02 from "../../../assets/FWImage02.jpg";
 import FWImage03 from "../../../assets/FWImage03.jpg";
 import FWImage04 from "../../../assets/FWImage04.jpg";
 import FWImage05 from "../../../assets/FWImage05.jpg";
+
+// Set VITE_CDN_BASE_URL in .env.local → "https://cdn.yourdomain.com"
+// Leave unset during local dev to use the public/pdfs/ fallback folder.
+const CDN_BASE = import.meta.env.VITE_CDN_BASE_URL ?? "";
+
+const pdf = (filename: string) => `${CDN_BASE}/pdfs/${filename}`;
 
 export type WorkTagTone = "aqua" | "lavender" | "orange" | "yellow";
 
@@ -26,6 +46,12 @@ export type WorkCategoryFilter = "All" | WorkCategory;
 export interface WorkTag {
   label: string;
   tone: WorkTagTone;
+}
+
+export interface PdfFile {
+  label: string;
+  /** Absolute URL or root-relative path (e.g. "/pdfs/my-doc.pdf"). */
+  url: string;
 }
 
 export interface WorkItem {
@@ -42,6 +68,8 @@ export interface WorkItem {
   /** Optional hero image URL. Falls back to abstract artwork when absent. */
   imageUrl?: string;
   tags: WorkTag[];
+  /** Optional downloadable / viewable PDF attachments shown in the detail modal. */
+  pdfFiles?: PdfFile[];
 }
 
 export const workItems: WorkItem[] = [
@@ -60,6 +88,9 @@ export const workItems: WorkItem[] = [
       { label: "EdTech", tone: "yellow" },
       { label: "StartUp", tone: "aqua" },
     ],
+    pdfFiles: [
+      { label: "React Essential Guide", url: pdf("react-essential-guide.pdf") },
+    ],
   },
   {
     slug: "applied-technology-workshop",
@@ -75,6 +106,9 @@ export const workItems: WorkItem[] = [
     tags: [
       { label: "Workshop", tone: "lavender" },
       { label: "Nonprofit", tone: "yellow" },
+    ],
+    pdfFiles: [
+      { label: "Applied Technology", url: pdf("applied-technology.pdf") },
     ],
   },
   {
