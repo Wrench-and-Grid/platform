@@ -1,20 +1,20 @@
-/**
- * WorkProjectRow — renders a single project as a horizontal archive row.
- *
- * Displays issue number, title, client, role, category pill, year, project
- * description, and discipline tags. Used inside the archive list on WorkPage.
- *
- * @param item - A `WorkItem` record from the work data catalogue.
- */
 import type { WorkItem } from "../data/works";
 
 type WorkProjectRowProps = {
   item: WorkItem;
+  onOpen: () => void;
 };
 
-export default function WorkProjectRow({ item }: WorkProjectRowProps) {
+export default function WorkProjectRow({ item, onOpen }: WorkProjectRowProps) {
   return (
-    <article className="archive-item-row work-project-row" data-cursor="Project">
+    <article
+      className="archive-item-row work-project-row"
+      data-cursor="Project"
+      onClick={onOpen}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onOpen(); }}
+      tabIndex={0}
+      style={{ cursor: "pointer" }}
+    >
       <div className="archive-item-issue">{item.number}</div>
       <div className="archive-item-copy">
         <div className="archive-item-header">
