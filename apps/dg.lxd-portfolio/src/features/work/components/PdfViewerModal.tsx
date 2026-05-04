@@ -146,7 +146,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
             {state.status === "ready" && state.blobUrl && (
               <iframe
                 className="pdf-vm-frame"
-                src={`${state.blobUrl}#toolbar=0&navpanes=0&scrollbar=1`}
+                src={`${state.blobUrl}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`}
                 title={title}
               />
             )}
