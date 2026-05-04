@@ -1,9 +1,9 @@
 import { useEffect, useReducer, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, ExternalLink, Loader2 } from "lucide-react";
 
-type PdfStatus = "loading" | "ready" | "error";
+type PdfStatus = "loading" | "ready" | "error" | "ios";
 
 type PdfViewerModalProps = {
   url: string | null;
@@ -20,31 +20,48 @@ type State = {
 type Action =
   | { type: "reset" }
   | { type: "ready"; blobUrl: string }
-  | { type: "error"; errorMsg: string };
+  | { type: "error"; errorMsg: string }
+  | { type: "ios" };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "reset":
-      return { status: "loading", blobUrl: null, errorMsg: "" };
-    case "ready":
-      return { status: "ready", blobUrl: action.blobUrl, errorMsg: "" };
-    case "error":
-      return { status: "error", blobUrl: null, errorMsg: action.errorMsg };
-    default:
-      return state;
+    case "reset": return { status: "loading", blobUrl: null, errorMsg: "" };
+    case "ready": return { status: "ready", blobUrl: action.blobUrl, errorMsg: "" };
+    case "error": return { status: "error", blobUrl: null, errorMsg: action.errorMsg };
+    case "ios":   return { status: "ios",   blobUrl: null, errorMsg: "" };
+    default:      return state;
   }
 }
 
+// iOS Safari cannot render PDFs in iframes reliably — blob URLs silently fail
+// or render at unscaled native resolution with no touch-scroll support.
+// iPadOS ≥13 reports as "MacIntel" + maxTouchPoints > 1, so check both.
+const isIOSDevice =
+  typeof navigator !== "undefined" &&
+  (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.userAgent.includes("Mac") && navigator.maxTouchPoints > 1));
+
 export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
-  const [state, dispatch] = useReducer(reducer, { status: "loading", blobUrl: null, errorMsg: "" });
+  const [state, dispatch] = useReducer(reducer, {
+    status: "loading",
+    blobUrl: null,
+    errorMsg: "",
+  });
 
-  // Fetch the PDF into a blob: URL so the <iframe> src is never a routable path.
-  // Without this, the SPA's catch-all <Route path="*"> boots inside the iframe
-  // and immediately redirects to "/" — showing the home page instead of the PDF.
   useEffect(() => {
     if (!url) return;
 
+    // iOS: skip the fetch entirely — show a direct-link fallback immediately.
+    // The blob → iframe path works on Android Chrome and desktop browsers.
+    if (isIOSDevice) {
+      dispatch({ type: "ios" });
+      return;
+    }
+
+    // Fetch the PDF into a blob: URL so the <iframe> src is never a routable
+    // path. Without this, the SPA catch-all <Route path="*"> bootstraps inside
+    // the iframe and redirects to "/" — showing the home page instead of the PDF.
     let revoked = false;
     let objectUrl: string | null = null;
     const controller = new AbortController();
@@ -105,7 +122,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
             role="dialog"
             aria-modal="true"
             aria-label={`PDF viewer: ${title}`}
-             aria-busy={state.status === "loading"}
+            aria-busy={state.status === "loading"}
           >
             <div className="pdf-vm-bar">
               <span className="pdf-vm-title">{title}</span>
@@ -120,7 +137,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
               </button>
             </div>
 
-             {state.status === "loading" && (
+            {state.status === "loading" && (
               <div className="pdf-vm-state" aria-live="polite">
                 <Loader2 className="pdf-vm-spinner" size={32} aria-hidden="true" />
                 <span>Loading document…</span>
@@ -138,7 +155,22 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
                   rel="noopener noreferrer"
                   className="pdf-vm-fallback-link"
                 >
-                  Open in new tab
+                  Open in new tab ↗
+                </a>
+              </div>
+            )}
+
+            {state.status === "ios" && (
+              <div className="pdf-vm-state">
+                <ExternalLink size={32} aria-hidden="true" />
+                <p>Tap below to view this document.</p>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pdf-vm-fallback-link--primary"
+                >
+                  Open PDF ↗
                 </a>
               </div>
             )}
