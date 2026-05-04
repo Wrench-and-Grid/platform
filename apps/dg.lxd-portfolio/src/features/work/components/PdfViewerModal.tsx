@@ -138,7 +138,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
                   rel="noopener noreferrer"
                   className="pdf-vm-fallback-link"
                 >
-                  Open in new tab ↗
+                  Open in new tab
                 </a>
               </div>
             )}
