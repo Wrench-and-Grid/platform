@@ -1,0 +1,15 @@
+{
+  "CORSRules": [
+    {
+      "AllowedHeaders": ["*"],
+      "AllowedMethods": ["GET"],
+      "AllowedOrigins": [
+        "https://daisyg.studio",
+        "https://www.daisyg.studio",
+        "http://localhost:5173"
+      ],
+      "ExposeHeaders": [],
+      "MaxAgeSeconds": 3600
+    }
+  ]
+}
