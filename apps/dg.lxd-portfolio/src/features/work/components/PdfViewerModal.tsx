@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertCircle, Loader2 } from "lucide-react";
@@ -11,11 +11,33 @@ type PdfViewerModalProps = {
   onClose: () => void;
 };
 
+type State = {
+  status: PdfStatus;
+  blobUrl: string | null;
+  errorMsg: string;
+};
+
+type Action =
+  | { type: "reset" }
+  | { type: "ready"; blobUrl: string }
+  | { type: "error"; errorMsg: string };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "reset":
+      return { status: "loading", blobUrl: null, errorMsg: "" };
+    case "ready":
+      return { status: "ready", blobUrl: action.blobUrl, errorMsg: "" };
+    case "error":
+      return { status: "error", blobUrl: null, errorMsg: action.errorMsg };
+    default:
+      return state;
+  }
+}
+
 export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
-  const [status, setStatus] = useState<PdfStatus>("loading");
-  const [blobUrl, setBlobUrl] = useState<string | null>(null);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [state, dispatch] = useReducer(reducer, { status: "loading", blobUrl: null, errorMsg: "" });
 
   // Fetch the PDF into a blob: URL so the <iframe> src is never a routable path.
   // Without this, the SPA's catch-all <Route path="*"> boots inside the iframe
@@ -27,9 +49,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
     let objectUrl: string | null = null;
     const controller = new AbortController();
 
-    setStatus("loading");
-    setErrorMsg("");
-    setBlobUrl(null);
+    dispatch({ type: "reset" });
 
     fetch(url, { signal: controller.signal })
       .then((res) => {
@@ -39,20 +59,17 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
       .then((blob) => {
         if (revoked) return;
         objectUrl = URL.createObjectURL(blob);
-        setBlobUrl(objectUrl);
-        setStatus("ready");
+        dispatch({ type: "ready", blobUrl: objectUrl });
       })
       .catch((err: Error) => {
         if (revoked || err.name === "AbortError") return;
-        setErrorMsg(err.message ?? "Unknown error.");
-        setStatus("error");
+        dispatch({ type: "error", errorMsg: err.message ?? "Unknown error." });
       });
 
     return () => {
       revoked = true;
       controller.abort();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
-      setBlobUrl(null);
     };
   }, [url]);
 
@@ -88,7 +105,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
             role="dialog"
             aria-modal="true"
             aria-label={`PDF viewer: ${title}`}
-            aria-busy={status === "loading"}
+             aria-busy={state.status === "loading"}
           >
             <div className="pdf-vm-bar">
               <span className="pdf-vm-title">{title}</span>
@@ -103,18 +120,18 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
               </button>
             </div>
 
-            {status === "loading" && (
+             {state.status === "loading" && (
               <div className="pdf-vm-state" aria-live="polite">
                 <Loader2 className="pdf-vm-spinner" size={32} aria-hidden="true" />
                 <span>Loading document…</span>
               </div>
             )}
 
-            {status === "error" && (
+            {state.status === "error" && (
               <div className="pdf-vm-state pdf-vm-state--error" aria-live="assertive">
                 <AlertCircle size={32} aria-hidden="true" />
                 <p>Could not load the document.</p>
-                {errorMsg && <code className="pdf-vm-error-code">{errorMsg}</code>}
+                {state.errorMsg && <code className="pdf-vm-error-code">{state.errorMsg}</code>}
                 <a
                   href={url}
                   target="_blank"
@@ -126,10 +143,10 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
               </div>
             )}
 
-            {status === "ready" && blobUrl && (
+            {state.status === "ready" && state.blobUrl && (
               <iframe
                 className="pdf-vm-frame"
-                src={`${blobUrl}#toolbar=0&navpanes=0&scrollbar=1`}
+                src={`${state.blobUrl}#toolbar=0&navpanes=0&scrollbar=1`}
                 title={title}
               />
             )}
