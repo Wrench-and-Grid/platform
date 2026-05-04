@@ -2131,8 +2131,9 @@ footer {
   body, a, button { cursor: auto; }
   #fluid { display: none; }
 
-   nav { padding: 1rem 1.5rem; }
-   .nav-logo-mark { width: clamp(7rem, 38vw, 11rem); }
+  nav { padding: 0.65rem 1.5rem; }
+  .nav-logo-mark { width: 3.5rem; }
+  .hero { margin-top: 4.75rem; }
   section { padding: 4.2rem 1.5rem; }
   .hero-big { font-size: 22vw; letter-spacing: -.06em; }
   .hero-mid { grid-template-columns: 1fr; justify-items: center; }
@@ -2244,8 +2245,9 @@ footer {
 
     /* Further mobile nav compactness */
     @media (max-width: 640px) {
-      nav { padding: 0.75rem 1rem; }
-      .nav-logo-mark { width: clamp(4.5rem, 28vw, 7rem); }
+      nav { padding: 0.5rem 1rem; }
+      .nav-logo-mark { width: 3rem; }
+      .hero { margin-top: 4.1rem; }
     }
 
    /* Hamburger & mobile menu */
@@ -2285,10 +2287,14 @@ footer {
   .wdm-panel { max-width: 100%; max-height: 92vh; }
   .wdm-body { padding: 1.4rem 1.4rem 2rem; }
 
-  /* PDF Viewer Modal mobile adjustments */
-  .pdf-vm-backdrop { padding: 0.5rem; }
-  .pdf-vm-shell { width: min(95vw, 58rem); height: min(95vh, 54rem); }
-  .pdf-vm-frame { width: 100%; height: 100%; }
+  /* PDF Viewer Modal — full-screen on mobile for maximum reading space */
+  .pdf-vm-backdrop { padding: 0; }
+  .pdf-vm-shell {
+    width: 100%;
+    height: 100vh; /* fallback */
+    height: 100dvh; /* excludes collapsible browser chrome */
+    border-radius: 0;
+  }
   }
 
     /* Desktop navigation override (min-width: 701px) */
