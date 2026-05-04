@@ -22,11 +22,11 @@ type HeroSectionProps = {
 };
 
 const impactStatements = [
-  "Nonprofit Program Management",
-  "Community Outreach",
-  "Mission-Led Storytelling",
-  "Creative Direction",
-  "Learning Design Impact",
+  "I’m always thinking about how people experience what I make",
+  "I try to create things people can actually connect with",
+  "Good work should move people, even in small ways",
+  "I’m drawn to work that supports people and their communities",
+  "Clarity is one of the most underrated design choices",
 ];
 
 export default function HeroSection({ onMountRegion }: HeroSectionProps) {
@@ -62,7 +62,7 @@ export default function HeroSection({ onMountRegion }: HeroSectionProps) {
             <div className="hero-photo-label">Daisy G. | Creative Director</div>
           </div>
           <p className="hero-tagline">
-            Design that moves people&nbsp;&mdash; one deliberate mark, one mission at a time.
+            Thoughtful design and communication can shape how people understand, connect, and act.
           </p>
         </div>
 
