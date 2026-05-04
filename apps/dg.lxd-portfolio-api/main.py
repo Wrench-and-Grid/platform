@@ -13,14 +13,23 @@ import logging.handlers
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
+from pathlib import Path
+
 from fastapi import FastAPI, Request
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import ValidationError
 
 from app.config import settings
 from app.database import init_db
-from app.routers.contact import pydantic_error_to_response, router as contact_router
+from app.rate_limit import limiter
+from app.routers.contact import (
+    pydantic_error_to_response,
+    request_validation_error_to_response,
+    router as contact_router,
+)
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 
@@ -63,6 +72,7 @@ logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger(__name__)
 
 
+
 # ── Lifespan ──────────────────────────────────────────────────────────────────
 
 @asynccontextmanager
@@ -86,6 +96,8 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
+app.state.limiter = limiter
+
 # CORS — only the listed origins may POST to the API
 app.add_middleware(
     CORSMiddleware,
@@ -99,6 +111,21 @@ app.include_router(contact_router)
 
 
 # ── Exception handlers ────────────────────────────────────────────────────────
+
+@app.exception_handler(FastAPIHTTPException)
+async def http_exception_handler(request: Request, exc: FastAPIHTTPException) -> JSONResponse:
+    logger.warning("HTTP %s on %s: %s", exc.status_code, request.url.path, exc.detail)
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"success": False, "message": str(exc.detail)},
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def request_validation_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    logger.warning("Request validation error on %s: %s", request.url.path, exc.errors())
+    return request_validation_error_to_response(exc)
+
 
 @app.exception_handler(ValidationError)
 async def validation_error_handler(request: Request, exc: ValidationError) -> JSONResponse:
@@ -129,3 +156,14 @@ async def global_error_handler(request: Request, exc: Exception) -> JSONResponse
 @app.get("/health", include_in_schema=False)
 async def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+# ── Favicon — served for the /docs and /redoc browser tabs ───────────────────
+# The ICO file lives alongside main.py so the route is self-contained.
+# Path(__file__).parent resolves correctly regardless of working directory.
+
+_FAVICON = Path(__file__).parent / "favicon.ico"
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon() -> FileResponse:
+    return FileResponse(_FAVICON, media_type="image/x-icon")

@@ -253,7 +253,7 @@ export default function ContactSection() {
       </div>
 
       <footer className="contact-footer">
-        <div className="footer-logo">&copy; 2025 Daisy G. | All rights reserved</div>
+        <div className="footer-logo">&copy; {new Date().getFullYear()} Daisy G. | All rights reserved</div>
       </footer>
     </section>
   );
