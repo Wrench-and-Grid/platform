@@ -22,11 +22,11 @@
  *
  * See docs/aws-pdf-hosting.md for the full S3 + CloudFront setup guide.
  */
-import FWImage01 from "../../../assets/FWImage01.jpg";
-import FWImage02 from "../../../assets/FWImage02.jpg";
-import FWImage03 from "../../../assets/FWImage03.jpg";
-import FWImage04 from "../../../assets/FWImage04.jpg";
-import FWImage05 from "../../../assets/FWImage05.jpg";
+import FWImage01 from "../../../assets/FWImage101.png";
+import FWImage02 from "../../../assets/FWImage102.png";
+import FWImage03 from "../../../assets/FWImage103.png";
+import FWImage04 from "../../../assets/FWImage104.png";
+import FWImage05 from "../../../assets/FWImage105.png";
 
 // Set VITE_CDN_BASE_URL in .env.local → "https://cdn.yourdomain.com"
 // Leave unset during local dev to use the public/pdfs/ fallback folder.
@@ -39,7 +39,7 @@ export type WorkTagTone = "aqua" | "lavender" | "orange" | "yellow";
 export type WorkCategory =
   | "Learning & Design Work"
   | "Community Work"
-  | "Brand Identity Work";
+  | "Visual Identity Work";
 
 export type WorkCategoryFilter = "All" | WorkCategory;
 
@@ -129,35 +129,35 @@ export const workItems: WorkItem[] = [
     ],
   },
   {
-    slug: "open-ground-exhibition",
+    slug: "andrea-sernobich-visual-identity",
     number: "04",
-    title: "Open Ground Exhibition",
-    category: "Learning & Design Work",
-    client: "Harbor House Gallery",
-    year: "2023",
-    role: "Exhibition Design",
+    title: "Andrea Sernobich Visual Identity",
+    category: "Visual Identity Work",
+    client: "Andrea Sernobich",
+    year: "2026",
+    role: "Social Media Strategist",
     description:
-      "A 12-piece fine art series exhibited in New York and Chicago, exploring themes of migration and belonging.",
+      "Partnered with Andrea to shape a social media strategy that feels aligned, intentional, and recognizable. By defining content direction, tone, and structure, the work focused on turning scattered ideas into a cohesive presence that builds both visibility and trust.",
     imageUrl: FWImage04,
     tags: [
-      { label: "Fine Art", tone: "lavender" },
-      { label: "Exhibition", tone: "yellow" },
+      { label: "Visual Identity", tone: "lavender" },
+      { label: "Communications", tone: "yellow" },
     ],
   },
   {
-    slug: "city-block-mutual-aid-toolkit",
+    slug: "community-mural-project",
     number: "05",
-    title: "City Block Mutual Aid Toolkit",
+    title: "Altavista Community Mural Project",
     category: "Community Work",
-    client: "Brooklyn Relief Network",
-    year: "2026",
-    role: "Campaign System + Toolkit Design",
+    client: "Corporación Garabato Inspira",
+    year: "2025",
+    role: "Creative Director",
     description:
-      "A portable visual kit for volunteers and organizers, built to scale fast across multilingual neighborhood events.",
+      "Directed the creative vision for the Altavista Mural Project with Corporación Garabato Inspira, translating community narratives into a cohesive visual experience. The role involved defining the concept, guiding collaboration with participants, and ensuring the final piece reflected both collective input and intentional design",
     imageUrl: FWImage05,
     tags: [
-      { label: "Outreach", tone: "orange" },
-      { label: "Toolkit", tone: "aqua" },
+      { label: "Nonprofit", tone: "orange" },
+      { label: "Muralism", tone: "aqua" },
     ],
   },
   {
@@ -182,7 +182,7 @@ export const workCategoryFilters: WorkCategoryFilter[] = [
   "All",
   "Learning & Design Work",
   "Community Work",
-  "Brand Identity Work",
+  "Visual Identity Work",
 ];
 
 /** Unique tag labels across all work items, capped at 8 for sidebar display. */
