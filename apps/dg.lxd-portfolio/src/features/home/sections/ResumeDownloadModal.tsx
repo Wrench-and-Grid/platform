@@ -17,11 +17,16 @@ export default function ResumeDownloadModal({ isOpen, onClose }: ResumeDownloadM
     RESUME_PDF_URL,
     "daisy-gonzalez-resume.pdf"
   );
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
   const [error, setError] = useState<string | null>(null);
+
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    if (isOpen) setError(null);
+  }
 
   useEffect(() => {
     if (!isOpen) return;
-    setError(null);
     document.body.style.overflow = "hidden";
     const id = setTimeout(() => downloadRef.current?.focus(), 60);
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
