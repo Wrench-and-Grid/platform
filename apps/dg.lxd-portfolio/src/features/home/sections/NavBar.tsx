@@ -9,12 +9,11 @@
  * - Scroll-lock: `document.body.style.overflow = "hidden"` while menu is open
  *   to prevent background scroll on mobile.
  */
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useCallback, useEffect } from "react";
 
 export default function NavBar() {
   const location = useLocation();
-  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   /** Lock body scroll while the mobile overlay is open. */
@@ -44,22 +43,6 @@ export default function NavBar() {
     setIsMenuOpen((prev) => !prev);
   }, []);
 
-  /** Smooth-scroll to `#contact` if already on the homepage; otherwise navigate there. */
-  const handleContactClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      setIsMenuOpen(false);
-
-      if (location.pathname !== "/") {
-        navigate("/#contact");
-        return;
-      }
-
-      document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    },
-    [location.pathname, navigate]
-  );
-
   return (
     <nav>
       <Link to="/" className="nav-logo" onClick={handleLogoClick}>
@@ -74,7 +57,7 @@ export default function NavBar() {
         <ul className="nav-links" onClick={() => setIsMenuOpen(false)}>
           <li><a href="#about">About Me</a></li>
           <li><Link to="/work" state={{ returnTo: "#work" }}>Work</Link></li>
-          <li><a href="#contact" onClick={handleContactClick}>Contact</a></li>
+          <li><a href="mailto:daisy.gu07@gmail.com">Contact</a></li>
         </ul>
       </div>
 

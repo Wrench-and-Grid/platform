@@ -1,10 +1,10 @@
 import { useFileDownload } from "../../../hooks/useFileDownload";
-import { API_URL } from "../../../lib/api";
+import { RESUME_PDF_URL } from "../../../lib/api";
 
 export default function ResumeStrip() {
   const { download, isDownloading } = useFileDownload(
-    `${API_URL}/api/v1/resume`,
-    "Daisy-Gonzalez-Resume.pdf"
+    RESUME_PDF_URL,
+    "daisy-gonzalez-resume.pdf"
   );
 
   return (

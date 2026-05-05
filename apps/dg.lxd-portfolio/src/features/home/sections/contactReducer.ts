@@ -22,29 +22,6 @@ export type Action =
 
 export const INITIAL_FIELDS: FormFields = { name: "", email: "", type: "", message: "" };
 
-// ── API contract ─────────────────────────────────────────────────────────────
-
-/** JSON body sent to POST /api/v1/contact. */
-export type ContactApiRequest = {
-  name: string;
-  email: string;
-  subject?: string;
-  message: string;
-};
-
-/**
- * All possible JSON response shapes from POST /api/v1/contact.
- * - 201: success=true, message always present, submission_id optional
- * - 422: success=false, errors array present, no message
- * - 429/500: success=false, message present, no errors
- */
-export type ContactApiResponse = {
-  success: boolean;
-  message?: string;
-  submission_id?: number;
-  errors?: { field: string; message: string }[];
-};
-
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "SET_FIELD":

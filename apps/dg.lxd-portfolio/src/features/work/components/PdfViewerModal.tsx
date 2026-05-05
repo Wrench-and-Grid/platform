@@ -170,7 +170,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
                   rel="noopener noreferrer"
                   className="pdf-vm-fallback-link--primary"
                 >
-                  Open PDF ↗
+                  Open PDF
                 </a>
               </div>
             )}
