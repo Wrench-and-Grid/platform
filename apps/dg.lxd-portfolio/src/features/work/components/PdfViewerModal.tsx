@@ -11,11 +11,16 @@ type PdfViewerModalProps = {
 
 export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const [prevUrl, setPrevUrl] = useState(url);
   const [error, setError] = useState<string | null>(null);
+
+  if (url !== prevUrl) {
+    setPrevUrl(url);
+    setError(null);
+  }
 
   useEffect(() => {
     if (!url) return;
-    setError(null);
     const id = setTimeout(() => closeRef.current?.focus(), 60);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
