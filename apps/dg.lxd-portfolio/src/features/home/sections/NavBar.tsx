@@ -57,7 +57,7 @@ export default function NavBar() {
         <ul className="nav-links" onClick={() => setIsMenuOpen(false)}>
           <li><a href="#about">About Me</a></li>
           <li><Link to="/work" state={{ returnTo: "#work" }}>Work</Link></li>
-          <li><a href="mailto:ltejedajr@gmail.com">Contact</a></li>
+          <li><a href="mailto:daisy.gu07@gmail.com">Contact</a></li>
         </ul>
       </div>
 

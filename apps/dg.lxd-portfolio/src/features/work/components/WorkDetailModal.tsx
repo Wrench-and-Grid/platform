@@ -47,20 +47,19 @@ export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps)
             transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
           >
             <Card className="wdm-panel" role="dialog" aria-modal="true" aria-labelledby="wdm-title">
-              <div className="wdm-top">
-                <button
-                  ref={closeRef}
-                  className="wdm-close"
-                  onClick={onClose}
-                  aria-label="Close dialog"
-                >
-                  ✕
-                </button>
-              </div>
-
               {item.imageUrl && (
-                <div className="wdm-image-wrap">
-                  <img src={item.imageUrl} alt={item.title} />
+                <div className="wdm-image-container">
+                  <div className="wdm-image-wrap">
+                    <img src={item.imageUrl} alt={item.title} />
+                  </div>
+                  <button
+                    ref={closeRef}
+                    className="wdm-close"
+                    onClick={onClose}
+                    aria-label="Close dialog"
+                  >
+                    ✕
+                  </button>
                 </div>
               )}
 
@@ -103,7 +102,7 @@ export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps)
                       <button
                         key={pdf.label}
                         type="button"
-                        className="wdm-pdf-thumb"
+                        className="btn-primary"
                         onClick={() => setActivePdf({ url: pdf.url, title: pdf.label })}
                         aria-label={`Open PDF: ${pdf.label}`}
                       >
