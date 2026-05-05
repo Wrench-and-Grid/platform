@@ -64,7 +64,10 @@ export interface WorkItem {
   client: string;
   year: string;
   role: string;
-  description: string;
+  /** Short description (1–2 sentences) for preview/list view. */
+  shortDescription: string;
+  /** Full description for detail view. */
+  fullDescription: string;
   /** Optional hero image URL. Falls back to abstract artwork when absent. */
   imageUrl?: string;
   tags: WorkTag[];
@@ -81,8 +84,10 @@ export const workItems: WorkItem[] = [
     client: "Nieva Team",
     year: "2024",
     role: "Learning Experience Designer",
-    description:
+    shortDescription:
       "Developed an interactive React learning experience that translates technical concepts into accessible, engaging instruction.",
+    fullDescription:
+      "Over the course of 4 months, developed an interactive React learning experience that translates technical concepts into accessible, engaging instruction. In close collaboration with a developer, I led the learning experience design, visual direction, and audio integration to create a cohesive and intuitive experience. The course was tested through multiple rounds of beta testing with intermediate to advanced programmers new to React, allowing us to refine the structure, pacing, and clarity based on real learner feedback..",
     imageUrl: FWImage01,
     tags: [
       { label: "EdTech", tone: "yellow" },
@@ -100,8 +105,10 @@ export const workItems: WorkItem[] = [
     client: "Corporación Garabato Inspira",
     year: "2025",
     role: "LXD + Workshop Facilitator",
-    description:
-      "Developed and delivered a learning experience that translated design principles into practical tools small business owners could immediately apply to their work.",
+    shortDescription:
+      "Designed and delivered a learning experience translating design principles into accessible, practical tools for small business owners.",
+    fullDescription:
+      "Collaborated with Corporación Garabato Inspira, who were working with a group of 15–20 small business owners receiving workshops and resources to grow their businesses. A recurring challenge across the group was low budget and limited knowledge of fundamental design principles. Through Applied Technology, I designed and delivered a learning experience that translated these concepts into accessible, practical tools. The focus was on empowering participants to take ownership of their brand and design decisions—building confidence and enabling them to apply these skills independently within their constraints..",
     imageUrl: FWImage02,
     tags: [
       { label: "Workshop", tone: "lavender" },
@@ -119,8 +126,10 @@ export const workItems: WorkItem[] = [
     client: "Corporacion Garabato Inspira",
     year: "2025",
     role: "Learning Experience Designer & Program Lead",
-    description:
-      "Designed and developed a learner-centered writing program that introduces young participants to storytelling and authorship through guided activities and creative exploration. The experience is designed to build confidence, voice, and self-expression.",
+    shortDescription:
+      "Designed and developed Young Author’s Lab, a 10-session learning experience focused on introducing children to storytelling through structured, creative exploration.",
+    fullDescription:
+      "Designed and developed Young Author’s Lab, a 10-session learning experience focused on introducing children to storytelling through structured, creative exploration. I delivered in partnership with Corporación Garabato Inspira, the program worked with a cohort of young children from the community and guided them through a progressive learning journey—from recognizing stories in their environment to producing first drafts of illustrated books.The design prioritized learner confidence as a precursor to skill development. Through group storytelling, peer feedback, and iterative creation, children shifted from seeing themselves as consumers of stories to authors of their own narratives. The final outcome included presentation moment where each child shared their work, reinforcing ownership and voice.",
     imageUrl: FWImage03,
     tags: [
       { label: "Nonprofit", tone: "aqua" },
@@ -129,14 +138,16 @@ export const workItems: WorkItem[] = [
     ],
   },
   {
-    slug: "andrea-sernobich-visual-identity",
+    slug: "brand-and-content-strategy",
     number: "04",
-    title: "Andrea Sernobich Visual Identity",
+    title: "Brand and Content Strategy",
     category: "Visual Identity Work",
     client: "Andrea Sernobich",
     year: "2026",
     role: "Social Media Strategist",
-    description:
+    shortDescription:
+      "Shaped a social media strategy that feels aligned, intentional, and recognizable.",
+    fullDescription:
       "Partnered with Andrea to shape a social media strategy that feels aligned, intentional, and recognizable. By defining content direction, tone, and structure, the work focused on turning scattered ideas into a cohesive presence that builds both visibility and trust.",
     imageUrl: FWImage04,
     tags: [
@@ -152,7 +163,9 @@ export const workItems: WorkItem[] = [
     client: "Corporación Garabato Inspira",
     year: "2025",
     role: "Creative Director",
-    description:
+    shortDescription:
+      "Directed the creative vision for the Altavista Mural Project, translating community narratives into a cohesive visual experience.",
+    fullDescription:
       "Directed the creative vision for the Altavista Mural Project with Corporación Garabato Inspira, translating community narratives into a cohesive visual experience. The role involved defining the concept, guiding collaboration with participants, and ensuring the final piece reflected both collective input and intentional design",
     imageUrl: FWImage05,
     tags: [
@@ -161,15 +174,17 @@ export const workItems: WorkItem[] = [
     ],
   },
   {
-    slug: "lantern-listening-tour",
+    slug: "design-day-program-atd",
     number: "06",
-    title: "Lantern Listening Tour",
-    category: "Learning & Design Work",
-    client: "The Listening Project",
-    year: "2024",
-    role: "Experience Design + Storytelling",
-    description:
-      "A pop-up storytelling system translating interview recordings into posters, field notes, and a traveling installation.",
+    title: "Design Day Program",
+    category: "Community Work",
+    client: "ATD NYC",
+    year: "2026",
+    role: "AVP of Programs",
+    shortDescription:
+      "Co-led a community-centered Design Day, translating an organizational challenge into a collaborative, volunteer-driven learning experience.",
+    fullDescription:
+      "In partnership with CIET at LaGuardia Community College, I served as AVP of Programs and co-led the Design Day initiative alongside the VP. We designed the experience around a real organizational challenge, beginning with proposal development to frame the problem and align outcomes. From there, we led volunteer recruitment and structured the event as a collaborative, hands-on experience. I also supported the creation of design assets to guide participants and ensure a cohesive experience. The result was a community-driven learning environment that combined strategy, storytelling, and applied design to generate meaningful solutions for the partner organization.",
     imageUrl: FWImage05,
     tags: [
       { label: "Experience", tone: "yellow" },

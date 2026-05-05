@@ -91,7 +91,7 @@ export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps)
                   </div>
                 </div>
 
-                <p className="wdm-description">{item.description}</p>
+                <p className="wdm-description">{item.fullDescription}</p>
               </CardContent>
 
               {item.pdfFiles && item.pdfFiles.length > 0 && (
