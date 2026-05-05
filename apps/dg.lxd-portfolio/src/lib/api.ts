@@ -6,7 +6,8 @@
 const CDN_BASE = import.meta.env.VITE_CDN_BASE_URL ?? "";
 
 /**
- * Direct CloudFront URL for the resume PDF.
- * The S3 object is expected at: <bucket>/resume/Daisy-Gonzalez-Resume.pdf
+ * Direct URL for the resume PDF.
+ * Local: /pdfs/daisy-gonzalez-resume.pdf
+ * Production: CDN_BASE/pdfs/daisy-gonzalez-resume.pdf (via CloudFront/S3)
  */
-export const RESUME_PDF_URL = `${CDN_BASE}/resume/Daisy-Gonzalez-Resume.pdf`;
+export const RESUME_PDF_URL = `${CDN_BASE}/pdfs/daisy-gonzalez-resume.pdf`;
