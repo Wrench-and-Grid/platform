@@ -15,7 +15,7 @@
  *   `<Route>` wraps its page in its own `<Suspense>` so an async import of the
  *   *incoming* page does not interrupt the *outgoing* page's exit animation.
  */
-import { lazy, Suspense, useCallback, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import CustomCursor from "./components/CustomCursor";
@@ -38,6 +38,12 @@ function PageFallback() {
 export default function App() {
   const location = useLocation();
   const isHome = location.pathname === "/";
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   const [fluidInteractionRegion, setFluidInteractionRegion] = useState<HTMLElement | null>(null);
 
