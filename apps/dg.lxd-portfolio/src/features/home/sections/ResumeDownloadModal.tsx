@@ -98,10 +98,12 @@ export default function ResumeDownloadModal({ isOpen, onClose }: ResumeDownloadM
 
   useEffect(() => {
     if (!isOpen) return;
+    document.body.style.overflow = "hidden";
     const id = setTimeout(() => downloadRef.current?.focus(), 60);
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", onKey);
     return () => {
+      document.body.style.overflow = "";
       clearTimeout(id);
       document.removeEventListener("keydown", onKey);
     };

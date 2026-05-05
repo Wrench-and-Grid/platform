@@ -105,7 +105,7 @@
 
 /* ── Reset ─────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { overflow-x: hidden; touch-action: pan-y; overscroll-behavior: none; }
+html { overflow-x: hidden; touch-action: pan-y; overscroll-behavior-y: none; }
 img, video { max-width: 100%; height: auto; }
 html { scroll-padding-top: 6.75rem; }
 h2 { font-weight: 500; }
@@ -115,9 +115,8 @@ body {
   color: var(--clr-ink);
   font-family: var(--font-sans);
   font-weight: 300;
-  overflow-x: hidden;
   touch-action: pan-y;
-  overscroll-behavior: none;
+  overscroll-behavior-y: none;
   background-image:
     radial-gradient(circle at 12% 12%, rgba(255, 91, 34, .08), transparent 22rem),
     radial-gradient(circle at 86% 14%, rgba(174, 230, 237, .16), transparent 18rem);
@@ -2698,6 +2697,15 @@ footer {
   /* PDF Viewer Modal — full-screen on mobile for maximum reading space */
   .pdf-vm-backdrop { padding: 0; }
   .pdf-vm-shell {
+    width: 100%;
+    height: 100vh; /* fallback */
+    height: 100dvh; /* excludes collapsible browser chrome */
+    border-radius: 0;
+  }
+
+  /* Resume Download Modal — full-screen on mobile for maximum reading space */
+  .rdm-backdrop { padding: 0; }
+  .rdm-shell {
     width: 100%;
     height: 100vh; /* fallback */
     height: 100dvh; /* excludes collapsible browser chrome */
