@@ -1,6 +1,5 @@
 import { useCallback, useId, useReducer } from "react";
-import { INITIAL_FIELDS, reducer, type ContactApiRequest, type ContactApiResponse, type FormFields } from "./contactReducer";
-import { API_URL } from "../../../lib/api";
+import { INITIAL_FIELDS, reducer, type FormFields } from "./contactReducer";
 
 export default function ContactSection() {
   const id = useId();
@@ -22,44 +21,17 @@ export default function ContactSection() {
   );
 
   const handleSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
+    (e: { preventDefault(): void }) => {
       e.preventDefault();
       if (isBusy) return;
 
       dispatch({ type: "SUBMIT_START" });
 
-      try {
-        const res = await fetch(`${API_URL}/api/v1/contact`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: fields.name.trim(),
-            email: fields.email.trim(),
-            subject: fields.type || undefined,
-            message: fields.message.trim(),
-          } satisfies ContactApiRequest),
-        });
-
-        const data: ContactApiResponse = await res.json();
-
-        if (!res.ok) {
-          const msg =
-            data.errors?.[0]?.message ??
-            data.message ??
-            "Something went wrong. Please try again.";
-          dispatch({ type: "SUBMIT_ERROR", message: msg });
-          return;
-        }
-
+      setTimeout(() => {
         dispatch({ type: "SUBMIT_SUCCESS" });
-      } catch {
-        dispatch({
-          type: "SUBMIT_ERROR",
-          message: "Unable to reach the server. Check your connection and try again.",
-        });
-      }
+      }, 800);
     },
-    [fields, isBusy]
+    [isBusy]
   );
 
   return (
