@@ -13,18 +13,15 @@ type ResumeDownloadModalProps = {
 export default function ResumeDownloadModal({ isOpen, onClose }: ResumeDownloadModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const downloadRef = useRef<HTMLButtonElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
   const { download, isDownloading } = useFileDownload(
     RESUME_PDF_URL,
     "daisy-gonzalez-resume.pdf"
   );
-  const [isMobile] = useState(() =>
-    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-  );
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isOpen) return;
+    setError(null);
     document.body.style.overflow = "hidden";
     const id = setTimeout(() => downloadRef.current?.focus(), 60);
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -64,7 +61,7 @@ export default function ResumeDownloadModal({ isOpen, onClose }: ResumeDownloadM
                 <button
                   type="button"
                   className="rdm-download-bar-btn"
-                  onClick={() => window.open(RESUME_PDF_URL, '_blank', 'noopener,noreferrer')}
+                  onClick={() => window.open(RESUME_PDF_URL, "_blank", "noopener,noreferrer")}
                   aria-label="Open resume in new tab"
                 >
                   <ExternalLink size={16} />
@@ -92,18 +89,25 @@ export default function ResumeDownloadModal({ isOpen, onClose }: ResumeDownloadM
             </div>
 
             <div className="rdm-document">
-              {isMobile ? (
-                <iframe
-                  className="rdm-frame"
-                  src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(RESUME_PDF_URL)}`}
-                  title="Resume Preview"
-                />
+              {error ? (
+                <div className="rdm-state">
+                  <h3 className="rdm-state-title pdf-vm-state-title--light">{error}</h3>
+                  <a
+                    href={RESUME_PDF_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pdf-vm-fallback-link pdf-vm-fallback-link--primary"
+                  >
+                    Download Resume
+                  </a>
+                </div>
               ) : (
-                <iframe
-                  ref={iframeRef}
+                <embed
+                  src={`${RESUME_PDF_URL}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
+                  type="application/pdf"
                   className="rdm-frame"
-                  src={`${RESUME_PDF_URL}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`}
                   title="Resume Preview"
+                  onError={() => setError("Unable to display resume. Please download to view.")}
                 />
               )}
             </div>

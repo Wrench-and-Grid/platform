@@ -11,16 +11,15 @@ type PdfViewerModalProps = {
 
 export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [isMobile] = useState(() =>
-    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-  );
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!url) return;
+    setError(null);
     const id = setTimeout(() => closeRef.current?.focus(), 60);
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
     document.addEventListener("keydown", onKey);
     return () => {
       clearTimeout(id);
@@ -56,7 +55,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
                 <button
                   type="button"
                   className="pdf-vm-open-tab-btn"
-                  onClick={() => window.open(url!, '_blank', 'noopener,noreferrer')}
+                  onClick={() => window.open(url!, "_blank", "noopener,noreferrer")}
                   aria-label="Open PDF in new tab"
                 >
                   <ExternalLink size={16} />
@@ -74,18 +73,25 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
             </div>
 
             <div className="pdf-vm-document">
-              {isMobile ? (
-                <iframe
-                  className="pdf-vm-frame"
-                  src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(url!)}`}
-                  title={`PDF Viewer: ${title}`}
-                />
+              {error ? (
+                <div className="pdf-vm-state pdf-vm-state--error">
+                  <div className="pdf-vm-state-title pdf-vm-state-title--light">{error}</div>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pdf-vm-fallback-link pdf-vm-fallback-link--primary"
+                  >
+                    Download PDF
+                  </a>
+                </div>
               ) : (
-                <iframe
-                  ref={iframeRef}
+                <embed
+                  src={`${url}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
+                  type="application/pdf"
                   className="pdf-vm-frame"
-                  src={`${url}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`}
                   title={`PDF Viewer: ${title}`}
+                  onError={() => setError("Unable to display PDF. Please download to view.")}
                 />
               )}
             </div>
