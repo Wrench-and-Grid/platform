@@ -30,9 +30,15 @@ export default function HomePage({ onFluidInteractionRegionChange }: HomePagePro
 
   useRevealOnScroll(".work-item, .g-item, .about-right");
 
-  /** Scroll to the hash anchor after the page has painted. */
+  /**
+   * Scroll to the hash anchor after the page has painted — but only when
+   * the navigation was an in-app transition (e.g. the Back button from
+   * WorkPage). On a fresh load or browser refresh `location.key` is
+   * "default", which means the hash came from the URL bar, not a back
+   * navigation, so we leave the viewport at the top (Hero section).
+   */
   useEffect(() => {
-    if (!location.hash) return;
+    if (!location.hash || location.key === "default") return;
 
     const target = document.querySelector<HTMLElement>(location.hash);
     if (!target) return;
@@ -40,7 +46,7 @@ export default function HomePage({ onFluidInteractionRegionChange }: HomePagePro
     window.requestAnimationFrame(() => {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-  }, [location.hash]);
+  }, [location.hash, location.key]);
 
   return (
     <>
