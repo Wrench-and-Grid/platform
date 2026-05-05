@@ -1140,6 +1140,273 @@ section { padding: 5.4rem 2.5rem; border-bottom: 1px solid var(--border); }
   margin-top: 2rem;
 }
 
+/* ── PRESS ─────────────────────────────────────────────── */
+#press h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  line-height: .95;
+  letter-spacing: .01em;
+  color: var(--clr-ink);
+  margin-bottom: 2rem;
+}
+
+#press h2 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--clr-orange);
+  font-size: .62em;
+  font-weight: 300;
+}
+
+/* Full-bleed ticker — breaks out of section's 2.5rem side padding */
+.press-ticker {
+  margin: 0 -2.5rem 3.5rem;
+  background: var(--clr-ink);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Edge fade masks create the illusion of infinite depth */
+.press-ticker::before,
+.press-ticker::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4rem;
+  z-index: 2;
+  pointer-events: none;
+}
+.press-ticker::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--clr-ink), transparent);
+}
+.press-ticker::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--clr-ink), transparent);
+}
+
+.press-ticker-track {
+  display: flex;
+  width: max-content;
+  padding: .9rem 0;
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+}
+
+.press-ticker-item {
+  font-family: var(--font-display);
+  font-size: .7rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--clr-off-white);
+  white-space: nowrap;
+  padding: 0 1.25rem;
+}
+
+.press-ticker-item::before {
+  content: '•';
+  color: var(--clr-orange);
+  margin-right: 1.25rem;
+}
+
+/* Large decorative quotation mark behind the cards */
+.press-bg-mark {
+  position: absolute;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(12rem, 28vw, 28rem);
+  line-height: 1;
+  color: var(--clr-ink);
+  opacity: 0.04;
+  pointer-events: none;
+  user-select: none;
+  top: -2rem;
+  left: -1rem;
+  z-index: 0;
+}
+
+/* Editorial pull-quote sidebar — hidden on mobile/tablet */
+.press-editorial {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .press-editorial {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.1rem;
+    flex: 1;
+    min-width: 0;
+    align-self: center;
+    padding: 1rem 0 1rem 1rem;
+  }
+}
+
+.press-editorial-rule {
+  display: block;
+  height: 1px;
+  background: var(--clr-ink);
+  opacity: 0.15;
+}
+
+.press-editorial-kicker {
+  font-family: var(--font-display);
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--clr-orange);
+  margin: 0;
+}
+
+.press-editorial-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(.95rem, 1.3vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--clr-ink);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.press-editorial-attribution {
+  font-family: var(--font-sans);
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: var(--clr-ink-mid);
+  margin: 0;
+}
+
+/* ── PRESS ARTICLE MODAL ────────────────────────────────── */
+.pam-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 750;
+  background: rgba(17, 16, 16, .82);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.pam-shell {
+  display: flex;
+  flex-direction: column;
+  width: min(92vw, 72rem);
+  height: min(90vh, 54rem);
+  background: var(--clr-off-white);
+  border: 1px solid rgba(17, 16, 16, .1);
+  box-shadow: 0 40px 100px rgba(17, 16, 16, .35);
+  border-radius: .5rem;
+  overflow: hidden;
+}
+
+.pam-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .65rem .75rem .65rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--clr-off-white);
+  flex-shrink: 0;
+}
+
+.pam-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.pam-source {
+  font-family: var(--font-display);
+  font-size: .95rem;
+  letter-spacing: .06em;
+  color: var(--clr-ink);
+}
+
+.pam-open-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--clr-orange);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.pam-open-btn:hover {
+  background: #e84d15;
+  transform: scale(1.05);
+}
+
+.pam-document {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.pam-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  transition: opacity .3s ease;
+}
+
+.pam-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  background: var(--clr-off-white);
+  font-size: .875rem;
+  color: var(--clr-ink-mid);
+  z-index: 1;
+}
+
+@keyframes pam-spin { to { transform: rotate(360deg); } }
+.pam-spinner { animation: pam-spin .9s linear infinite; color: var(--clr-orange); }
+
+.pam-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  height: 100%;
+}
+
+.pam-state-text {
+  font-size: .875rem;
+  color: var(--clr-ink-mid);
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .pam-backdrop { padding: 0; }
+  .pam-shell {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+  }
+  .pam-bar { padding: .5rem .75rem; }
+  .pam-source { font-size: .9rem; }
+  .pam-open-btn { width: 1.75rem; height: 1.75rem; min-width: 1.75rem; }
+}
+
 /* ── CONTACT ───────────────────────────────────────────── */
 #contact { background: var(--clr-off-white); color: var(--clr-ink); }
 #contact .s-label::before { background: var(--clr-orange); }
@@ -2696,6 +2963,8 @@ footer {
   /* Restore default cursor on touch devices */
   body, a, button { cursor: auto; }
   #fluid { display: none; }
+  /* Press ticker — match mobile section padding of 1.5rem */
+  .press-ticker { margin-left: -1.5rem; margin-right: -1.5rem; }
 
   nav { padding: 0.65rem 1.5rem; }
   .nav-logo-mark { width: 3.5rem; }
@@ -2908,9 +3177,10 @@ footer {
   .rdm-document {
     padding: 0;
   }
+}
 
-    /* Desktop navigation override (min-width: 701px) */
-    @media (min-width: 701px) {
+/* Desktop navigation override (min-width: 701px) */
+@media (min-width: 701px) {
       nav {
         display: flex;
         align-items: center;
@@ -2970,6 +3240,4 @@ footer {
     scroll-behavior: auto !important;
   }
   .will-reveal { opacity: 1; transform: none; }
-}
-
 }

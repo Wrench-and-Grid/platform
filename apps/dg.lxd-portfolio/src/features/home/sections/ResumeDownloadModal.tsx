@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Download, ExternalLink } from "lucide-react";
@@ -18,6 +18,14 @@ export default function ResumeDownloadModal({ isOpen, onClose }: ResumeDownloadM
     RESUME_PDF_URL,
     "daisy-gonzalez-resume.pdf"
   );
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+    );
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -88,12 +96,20 @@ export default function ResumeDownloadModal({ isOpen, onClose }: ResumeDownloadM
             </div>
 
             <div className="rdm-document">
-              <iframe
-                ref={iframeRef}
-                className="rdm-frame"
-                src={`${RESUME_PDF_URL}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`}
-                title="Resume Preview"
-              />
+              {isMobile ? (
+                <iframe
+                  className="rdm-frame"
+                  src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(RESUME_PDF_URL)}`}
+                  title="Resume Preview"
+                />
+              ) : (
+                <iframe
+                  ref={iframeRef}
+                  className="rdm-frame"
+                  src={`${RESUME_PDF_URL}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`}
+                  title="Resume Preview"
+                />
+              )}
             </div>
           </motion.div>
         </motion.div>

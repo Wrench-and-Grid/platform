@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
@@ -12,6 +12,14 @@ type PdfViewerModalProps = {
 export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+    );
+  }, []);
 
   useEffect(() => {
     if (!url) return;
@@ -70,12 +78,20 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
             </div>
 
             <div className="pdf-vm-document">
-              <iframe
-                ref={iframeRef}
-                className="pdf-vm-frame"
-                src={`${url}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`}
-                title={`PDF Viewer: ${title}`}
-              />
+              {isMobile ? (
+                <iframe
+                  className="pdf-vm-frame"
+                  src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(url!)}`}
+                  title={`PDF Viewer: ${title}`}
+                />
+              ) : (
+                <iframe
+                  ref={iframeRef}
+                  className="pdf-vm-frame"
+                  src={`${url}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`}
+                  title={`PDF Viewer: ${title}`}
+                />
+              )}
             </div>
           </motion.div>
         </motion.div>

@@ -26,6 +26,18 @@ export function useFileDownload(
   const download = useCallback(async () => {
     if (controllerRef.current) return;
 
+    // iOS/Android don't honour the `download` attribute on blob URLs and block
+    // async-created object URLs. Open in a new tab so the native viewer takes over.
+    const isMobile =
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    if (isMobile) {
+      window.open(filePath, "_blank", "noopener,noreferrer");
+      dispatch({ type: "done" });
+      return;
+    }
+
     const controller = new AbortController();
     controllerRef.current = controller;
     dispatch({ type: "start" });
