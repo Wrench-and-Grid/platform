@@ -18,14 +18,10 @@ export default function ResumeDownloadModal({ isOpen, onClose }: ResumeDownloadM
     RESUME_PDF_URL,
     "daisy-gonzalez-resume.pdf"
   );
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(
-      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-    );
-  }, []);
+  const [isMobile] = useState(() =>
+    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
 
   useEffect(() => {
     if (!isOpen) return;

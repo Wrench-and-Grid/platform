@@ -12,14 +12,10 @@ type PdfViewerModalProps = {
 export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(
-      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-    );
-  }, []);
+  const [isMobile] = useState(() =>
+    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
 
   useEffect(() => {
     if (!url) return;

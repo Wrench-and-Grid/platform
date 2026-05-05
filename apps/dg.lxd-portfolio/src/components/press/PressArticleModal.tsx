@@ -12,11 +12,11 @@ type PressArticleModalProps = {
 
 export default function PressArticleModal({ article, onClose }: PressArticleModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
+  const loading = article?.url !== loadedUrl;
 
   useEffect(() => {
     if (!article) return;
-    setLoading(true);
     document.body.style.overflow = "hidden";
     const id = setTimeout(() => closeRef.current?.focus(), 60);
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -85,7 +85,7 @@ export default function PressArticleModal({ article, onClose }: PressArticleModa
                 className="pam-frame"
                 src={`/api/proxy?url=${encodeURIComponent(article.url)}`}
                 title={article.title}
-                onLoad={() => setLoading(false)}
+                onLoad={() => setLoadedUrl(article.url)}
                 style={{ opacity: loading ? 0 : 1, transition: "opacity 0.3s ease" }}
               />
             </div>
