@@ -113,6 +113,23 @@ export default function WorkDetailModal({ item, onClose }: WorkDetailModalProps)
                 </div>
               )}
 
+              {item.slug === "young-authors-lab" && (
+                <div className="wdm-pdf-section">
+                  <p className="wdm-pdf-label">Experience Link</p>
+                  <div className="wdm-pdf-grid">
+                    <a
+                      href="https://share.articulate.com/jeBg1fUrhG-xFZs3CuKuc"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary"
+                      aria-label="Open Young Authors Lab experience in new tab"
+                    >
+                      View Experience
+                    </a>
+                  </div>
+                </div>
+              )}
+
               <CardFooter className="wdm-tags">
                 {item.tags.map((tag) => (
                   <Badge key={tag.label} className={`archive-pill archive-pill--${tag.tone}`}>

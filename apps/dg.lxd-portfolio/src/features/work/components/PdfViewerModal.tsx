@@ -1,7 +1,11 @@
 import { useEffect, useReducer, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertCircle, ExternalLink, Loader2 } from "lucide-react";
+import { Document, Page, pdfjs } from "react-pdf";
+import { AlertCircle, ExternalLink, Loader2, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
+
+// Configure PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 type PdfStatus = "loading" | "ready" | "error" | "ios";
 
@@ -15,20 +19,29 @@ type State = {
   status: PdfStatus;
   blobUrl: string | null;
   errorMsg: string;
+  numPages: number;
+  currentPage: number;
+  scale: number;
 };
 
 type Action =
   | { type: "reset" }
   | { type: "ready"; blobUrl: string }
   | { type: "error"; errorMsg: string }
-  | { type: "ios" };
+  | { type: "ios" }
+  | { type: "loadSuccess"; numPages: number }
+  | { type: "setPage"; page: number }
+  | { type: "setScale"; scale: number };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "reset": return { status: "loading", blobUrl: null, errorMsg: "" };
-    case "ready": return { status: "ready", blobUrl: action.blobUrl, errorMsg: "" };
-    case "error": return { status: "error", blobUrl: null, errorMsg: action.errorMsg };
-    case "ios":   return { status: "ios",   blobUrl: null, errorMsg: "" };
+    case "reset": return { status: "loading", blobUrl: null, errorMsg: "", numPages: 0, currentPage: 1, scale: 1.0 };
+    case "ready": return { ...state, status: "ready", blobUrl: action.blobUrl, errorMsg: "" };
+    case "error": return { ...state, status: "error", blobUrl: null, errorMsg: action.errorMsg };
+    case "ios":   return { ...state, status: "ios", blobUrl: null, errorMsg: "" };
+    case "loadSuccess": return { ...state, numPages: action.numPages };
+    case "setPage": return { ...state, currentPage: Math.max(1, Math.min(action.page, state.numPages)) };
+    case "setScale": return { ...state, scale: Math.max(0.5, Math.min(action.scale, 2.0)) };
     default:      return state;
   }
 }
@@ -43,10 +56,14 @@ const isIOSDevice =
 
 export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const openTabRef = useRef<HTMLButtonElement>(null);
   const [state, dispatch] = useReducer(reducer, {
     status: "loading",
     blobUrl: null,
     errorMsg: "",
+    numPages: 0,
+    currentPage: 1,
+    scale: 1.0,
   });
 
   useEffect(() => {
@@ -92,14 +109,20 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
 
   useEffect(() => {
     if (!url) return;
-    const id = setTimeout(() => closeRef.current?.focus(), 60);
+    const id = setTimeout(() => {
+      if (state.status === "ready") {
+        openTabRef.current?.focus();
+      } else {
+        closeRef.current?.focus();
+      }
+    }, 60);
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", onKey);
     return () => {
       clearTimeout(id);
       document.removeEventListener("keydown", onKey);
     };
-  }, [url, onClose]);
+  }, [url, onClose, state.status]);
 
   return createPortal(
     <AnimatePresence>
@@ -126,15 +149,28 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
           >
             <div className="pdf-vm-bar">
               <span className="pdf-vm-title">{title}</span>
-              <button
-                ref={closeRef}
-                type="button"
-                className="wdm-close"
-                onClick={onClose}
-                aria-label="Close PDF viewer"
-              >
-                ✕
-              </button>
+              <div className="pdf-vm-bar-actions">
+                {state.status === "ready" && (
+                  <button
+                    ref={openTabRef}
+                    type="button"
+                    className="pdf-vm-open-tab-btn"
+                    onClick={() => window.open(url!, '_blank', 'noopener,noreferrer')}
+                    aria-label="Open PDF in new tab"
+                  >
+                    <ExternalLink size={16} />
+                  </button>
+                )}
+                <button
+                  ref={closeRef}
+                  type="button"
+                  className="wdm-close"
+                  onClick={onClose}
+                  aria-label="Close PDF viewer"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
 
             {state.status === "loading" && (
@@ -176,11 +212,81 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
             )}
 
             {state.status === "ready" && state.blobUrl && (
-              <iframe
-                className="pdf-vm-frame"
-                src={`${state.blobUrl}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`}
-                title={title}
-              />
+              <div className="pdf-vm-viewer">
+                <div className="pdf-vm-controls">
+                  <div className="pdf-vm-nav">
+                    <button
+                      type="button"
+                      className="pdf-vm-nav-btn"
+                      onClick={() => dispatch({ type: "setPage", page: state.currentPage - 1 })}
+                      disabled={state.currentPage <= 1}
+                      aria-label="Previous page"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    <span className="pdf-vm-page-info">
+                      {state.currentPage} of {state.numPages}
+                    </span>
+                    <button
+                      type="button"
+                      className="pdf-vm-nav-btn"
+                      onClick={() => dispatch({ type: "setPage", page: state.currentPage + 1 })}
+                      disabled={state.currentPage >= state.numPages}
+                      aria-label="Next page"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                  <div className="pdf-vm-zoom">
+                    <button
+                      type="button"
+                      className="pdf-vm-zoom-btn"
+                      onClick={() => dispatch({ type: "setScale", scale: state.scale - 0.2 })}
+                      disabled={state.scale <= 0.5}
+                      aria-label="Zoom out"
+                    >
+                      <ZoomOut size={16} />
+                    </button>
+                    <span className="pdf-vm-zoom-info">{Math.round(state.scale * 100)}%</span>
+                    <button
+                      type="button"
+                      className="pdf-vm-zoom-btn"
+                      onClick={() => dispatch({ type: "setScale", scale: state.scale + 0.2 })}
+                      disabled={state.scale >= 2.0}
+                      aria-label="Zoom in"
+                    >
+                      <ZoomIn size={16} />
+                    </button>
+                  </div>
+                </div>
+                <div className="pdf-vm-document">
+                  <Document
+                    file={state.blobUrl}
+                    onLoadSuccess={({ numPages }) => dispatch({ type: "loadSuccess", numPages })}
+                    onLoadError={(error) => dispatch({ type: "error", errorMsg: error.message })}
+                    loading={
+                      <div className="pdf-vm-state" aria-live="polite">
+                        <Loader2 className="pdf-vm-spinner" size={32} aria-hidden="true" />
+                        <span>Loading document…</span>
+                      </div>
+                    }
+                    error={
+                      <div className="pdf-vm-state pdf-vm-state--error" aria-live="assertive">
+                        <AlertCircle size={32} aria-hidden="true" />
+                        <p>Could not load the document.</p>
+                      </div>
+                    }
+                  >
+                    <Page
+                      pageNumber={state.currentPage}
+                      scale={state.scale}
+                      renderTextLayer={false}
+                      renderAnnotationLayer={false}
+                      className="pdf-vm-page"
+                    />
+                  </Document>
+                </div>
+              </div>
             )}
           </motion.div>
         </motion.div>
