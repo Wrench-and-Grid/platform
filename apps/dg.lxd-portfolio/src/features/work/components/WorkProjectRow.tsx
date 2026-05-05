@@ -32,7 +32,7 @@ export default function WorkProjectRow({ item, onOpen }: WorkProjectRowProps) {
             <span>{item.year}</span>
           </div>
         </div>
-        <p className="archive-item-excerpt">{item.description}</p>
+        <p className="archive-item-excerpt">{item.shortDescription}</p>
         <div className="work-project-tags">
           {item.tags.map((tag) => (
             <span key={tag.label} className={`archive-pill archive-pill--${tag.tone}`}>

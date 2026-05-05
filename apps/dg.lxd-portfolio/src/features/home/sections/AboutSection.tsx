@@ -93,13 +93,30 @@ export default function AboutSection() {
           ROOTED IN <em>purpose.</em>
         </h2>
         <p className="about-body">
-          I&apos;m Daisy Gonzalez - a Learning Experience Designer, Creative Director, and Communicator
-          drawn to work that has meaning behind it. I care about how ideas are shaped, how they’re 
+          I&apos;m Daisy Gonzalez — a Learning Experience Designer, Creative Director, and Communicator. I&apos;m 
+          drawn to work that carries meaning and I care deeply about how ideas are shaped, how they&apos;re 
           understood, and what they make people feel.
         </p>
+
         <p className="about-body">
-          My work lives in that space between structure and story—where clarity, intention, and design 
-          come together to help people connect, learn, and move forward.
+          My work lives in that space between structure and story — where clarity, intention, and design 
+          come together to help people connect, learn, and move forward. I&apos;m interested in building 
+          experiences and working with people who share that same commitment to human-centered design — where learning feels engaging, relevant, 
+          and personal.
+        </p>
+
+        <p className="about-body">
+          Creativity is at the center of everything I do. It&apos;s how I make sense of the world, how I 
+          solve problems, and how I bring ideas to life. Whether I&apos;m designing a learning experience, 
+          shaping a narrative, or developing a creative concept, I approach my work with both curiosity 
+          and intention.
+        </p>
+
+        <p className="about-body">
+          I&apos;m especially drawn to projects that sit at the intersection of education, community, and 
+          storytelling — where design can create access, build confidence, and shift how people see 
+          themselves and their ideas. For me, this work is not just about creating something well-designed, 
+          but about creating something that resonates and stays with people.
         </p>
 
         <div className="about-stats">
