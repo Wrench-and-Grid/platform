@@ -454,10 +454,12 @@ nav {
 .nav-links { display: flex; list-style: none; }
 .nav-links a {
   position: relative;
-  font-size: .7rem; font-weight: 400; letter-spacing: .1em;
+  font-size: .75rem; font-weight: 500; letter-spacing: .1em;
   text-transform: uppercase; color: var(--clr-ink-mid);
   text-decoration: none; padding: .35rem .8rem; transition: color .22s ease;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .nav-links a::before { content: '[ '; }
 .nav-links a::after  {
@@ -604,8 +606,8 @@ nav {
 .hero-right-col { padding: 0 2.5rem 2rem; align-self: flex-end; text-align: right; animation: fadeUp .8s .4s cubic-bezier(.22, 1, .36, 1) both; }
 .hero-tagline {
   position: absolute;
-  left: -2.2rem;
-  bottom: 1.6rem;
+  left: -30%;
+  bottom: 8%;
   z-index: 3;
   max-width: 15.5rem;
   padding: .9rem 1.1rem .9rem 1.15rem;
@@ -1215,7 +1217,7 @@ select.form-input option { background: #fff; color: var(--clr-ink); }
 
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-18px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeUp {
@@ -2141,6 +2143,187 @@ footer {
   opacity: 1;
 }
 
+/* ── CONTACT MODAL ─────────────────────────────────────── */
+.ctm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: rgba(17, 16, 16, .72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.ctm-panel {
+  position: relative;
+  background: var(--clr-off-white);
+  border: 1px solid rgba(17, 16, 16, .08);
+  box-shadow: 0 32px 80px rgba(17, 16, 16, .28);
+  width: 100%;
+  max-width: 26rem;
+  overflow: hidden;
+}
+
+.ctm-accent-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--clr-orange) 0%, var(--clr-aqua) 100%);
+}
+
+.ctm-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, .5);
+  border-radius: 999px;
+  font-size: .9rem;
+  line-height: 1;
+  color: var(--clr-ink-mid);
+  cursor: pointer;
+  transition: color .18s, border-color .18s, background .18s;
+  z-index: 2;
+}
+.ctm-close:hover {
+  color: var(--clr-ink);
+  border-color: rgba(17, 16, 16, .24);
+  background: rgba(255, 91, 34, .08);
+}
+
+.ctm-body {
+  padding: 1.8rem 1.8rem 2rem;
+}
+
+.ctm-eyebrow {
+  font-family: var(--font-sans);
+  font-size: .58rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--clr-orange);
+  font-weight: 500;
+  margin-bottom: .55rem;
+}
+
+.ctm-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 9vw, 3.4rem);
+  letter-spacing: .01em;
+  line-height: .9;
+  color: var(--clr-ink);
+  margin-bottom: .6rem;
+}
+
+.ctm-sub {
+  font-size: .88rem;
+  line-height: 1.78;
+  color: var(--clr-ink-mid);
+  font-weight: 300;
+  margin-bottom: 1.4rem;
+  max-width: 22rem;
+}
+
+.ctm-email-row {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .82rem .95rem;
+  background: rgba(255, 91, 34, .05);
+  border: 1px solid rgba(255, 91, 34, .14);
+  border-left: 2.5px solid var(--clr-orange);
+  margin-bottom: 1rem;
+  transition: background .2s, border-color .2s;
+}
+.ctm-email-row:hover {
+  background: rgba(255, 91, 34, .09);
+  border-color: rgba(255, 91, 34, .28);
+  border-left-color: var(--clr-orange);
+}
+
+.ctm-email-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  color: var(--clr-orange);
+  line-height: 1;
+}
+
+.ctm-email-link {
+  font-family: var(--font-sans);
+  font-size: .86rem;
+  color: var(--clr-ink);
+  text-decoration: none;
+  letter-spacing: .01em;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .18s;
+}
+.ctm-email-link:hover { color: var(--clr-orange); }
+
+.ctm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .55rem;
+}
+
+.ctm-copy-btn {
+  padding: .6rem .9rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--clr-ink-mid);
+  font-family: var(--font-sans);
+  font-size: .64rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.ctm-copy-btn:hover {
+  color: var(--clr-ink);
+  border-color: rgba(17, 16, 16, .3);
+  background: rgba(17, 16, 16, .03);
+}
+.ctm-copy-btn.is-copied {
+  color: #2f9e44;
+  border-color: rgba(47, 158, 68, .35);
+  background: rgba(47, 158, 68, .06);
+}
+
+.ctm-open-btn {
+  padding: .6rem .9rem;
+  background: var(--clr-orange);
+  border: 1px solid var(--clr-orange);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: .64rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity .18s;
+}
+.ctm-open-btn:hover { opacity: .84; }
+
+/* Mobile: full-width card */
+@media (max-width: 700px) {
+  .ctm-backdrop { padding: 1rem; align-items: flex-end; }
+  .ctm-panel { max-width: 100%; }
+  .ctm-body { padding: 1.4rem 1.4rem 1.8rem; }
+  .ctm-headline { font-size: 2.5rem; }
+}
+
 /* ── RESPONSIVE ────────────────────────────────────────── */
 @media (max-width: 1024px) {
   #contact .contact-footer {
@@ -2178,19 +2361,21 @@ footer {
   .nav-logo-mark { width: 3.5rem; }
   .hero { margin-top: 4.75rem; }
   section { padding: 4.2rem 1.5rem; }
+  .hero-meta-bar { flex-direction: column; align-items:flex-end; gap: .75rem; bottom: 4rem; }
   .hero-big { font-size: 22vw; letter-spacing: -.06em; }
   .hero-mid { grid-template-columns: 1fr; justify-items: center; }
   .hero-disciplines { display: none; }
   .hero-impact-item { font-size: .6rem; }
+  .hero-photo-label { font-size: 8.90px; }
   .hero-tagline {
-    left: 0.5rem;
-    bottom: 0.75rem;
-    width: min(72%, 14rem);
-    max-width: none;
+    left: -50%;
+    bottom: 8%;
+    width: auto;
+    max-width: 9rem;
     transform: none;
-    font-size: .82rem;
-    line-height: 1.55;
-    padding: .7rem .9rem .7rem 1rem;
+    font-size: .68rem;
+    line-height: 1.38;
+    padding: .38rem .5rem .38rem .6rem;
   }
 
   .gallery-grid {
@@ -2312,8 +2497,11 @@ footer {
      display: flex; flex-direction: column; align-items: center; gap: 2rem;
    }
    .nav-menu .nav-links a {
-     font-size: 1.25rem; font-weight: 300; letter-spacing: .08em; text-transform: uppercase;
-     padding: 0.5rem 1rem; transition: color .25s ease; position: relative;
+     font-family: var(--font-sans);
+     font-size: 1rem; font-weight: 400; letter-spacing: .1em; text-transform: uppercase;
+     color: var(--clr-ink);
+     padding: 0.4rem 0.75rem; transition: color .25s ease; position: relative;
+     overflow: visible;
    }
    .nav-menu .nav-links a:after {
      content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px;
@@ -2352,29 +2540,36 @@ footer {
       }
       .hamburger { display: none; }
 
-      /* True viewport-center: nav-menu is absolutely positioned at 50% of the fixed nav */
+      /* .nav-menu lives outside <nav> in the DOM (to avoid nav's backdrop-filter
+         creating a containing block for position:fixed children). On desktop we
+         layer it over the nav bar using the same fixed coordinates. */
       .nav-menu {
-        position: absolute !important;
-        left: 50% !important;
-        top: 50% !important;
-        transform: translate(-50%, -50%) !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: auto !important;
+        /* Match nav height: 2 × 1.4rem padding + 5rem logo = 7.8rem */
+        height: 7.8rem !important;
         display: flex !important;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+        align-items: center !important;
+        justify-content: center !important;
         opacity: 1 !important;
         visibility: visible !important;
-        pointer-events: auto !important;
+        pointer-events: none !important;
         background: none !important;
         backdrop-filter: none !important;
-        width: auto;
-        height: auto;
+        transform: none !important;
+        /* Must be above nav (200) so links aren't painted over by nav's background */
+        z-index: 201 !important;
+        animation: slideDown .75s cubic-bezier(.22, 1, .36, 1) both;
       }
       .nav-menu .nav-links {
         display: flex;
         flex-direction: row;
         list-style: none;
         gap: 2rem;
+        pointer-events: auto;
       }
     }
 

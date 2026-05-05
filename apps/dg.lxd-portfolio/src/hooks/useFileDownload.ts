@@ -50,7 +50,6 @@ export function useFileDownload(
     } catch (err) {
       if ((err as Error).name === "AbortError") return;
       dispatch({ type: "error" });
-      window.open(filePath);
     } finally {
       controllerRef.current = null;
     }

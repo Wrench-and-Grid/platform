@@ -11,10 +11,12 @@
  */
 import { Link, useLocation } from "react-router-dom";
 import { useState, useCallback, useEffect } from "react";
+import ContactModal from "./ContactModal";
 
 export default function NavBar() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   /** Lock body scroll while the mobile overlay is open. */
   useEffect(() => {
@@ -44,11 +46,14 @@ export default function NavBar() {
   }, []);
 
   return (
-    <nav>
-      <Link to="/" className="nav-logo" onClick={handleLogoClick}>
-        <img src="/dg_logo.svg" alt="Logo" className="nav-logo-mark" width="96" height="96" />
-      </Link>
-
+    <>
+      {/*
+       * .nav-menu is intentionally rendered OUTSIDE <nav>.
+       * nav has backdrop-filter + animation(transform), both of which make it
+       * a CSS containing block for position:fixed children. Keeping nav-menu
+       * inside nav trapped the full-screen overlay to nav's ~77px height,
+       * clipping the first menu item ("About Me") above the visible area.
+       */}
       <div
         id="primary-navigation"
         className={`nav-menu ${isMenuOpen ? "is-open" : ""}`}
@@ -57,21 +62,36 @@ export default function NavBar() {
         <ul className="nav-links" onClick={() => setIsMenuOpen(false)}>
           <li><a href="#about">About Me</a></li>
           <li><Link to="/work" state={{ returnTo: "#work" }}>Work</Link></li>
-          <li><a href="mailto:daisy.gu07@gmail.com">Contact</a></li>
+          <li>
+            <a
+              href="mailto:daisy.gu07@gmail.com"
+              onClick={(e) => { e.preventDefault(); setIsMenuOpen(false); setIsContactOpen(true); }}
+            >
+              Contact
+            </a>
+          </li>
         </ul>
       </div>
 
-      <button
-        className={`hamburger ${isMenuOpen ? "is-open" : ""}`}
-        onClick={toggleMenu}
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        aria-expanded={isMenuOpen}
-        aria-controls="primary-navigation"
-      >
-        <span className="hamburger-line" />
-        <span className="hamburger-line" />
-        <span className="hamburger-line" />
-      </button>
-    </nav>
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+
+      <nav>
+        <Link to="/" className="nav-logo" onClick={handleLogoClick}>
+          <img src="/dg_logo.svg" alt="Logo" className="nav-logo-mark" width="96" height="96" />
+        </Link>
+
+        <button
+          className={`hamburger ${isMenuOpen ? "is-open" : ""}`}
+          onClick={toggleMenu}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="primary-navigation"
+        >
+          <span className="hamburger-line" />
+          <span className="hamburger-line" />
+          <span className="hamburger-line" />
+        </button>
+      </nav>
+    </>
   );
 }
