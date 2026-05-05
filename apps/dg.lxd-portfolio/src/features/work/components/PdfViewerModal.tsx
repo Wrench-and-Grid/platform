@@ -3,9 +3,11 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Document, Page, pdfjs } from "react-pdf";
 import { AlertCircle, ExternalLink, Loader2, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
 
 // Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
 type PdfStatus = "loading" | "ready" | "error" | "ios";
 
@@ -18,6 +20,7 @@ type PdfViewerModalProps = {
 type State = {
   status: PdfStatus;
   blobUrl: string | null;
+  blob: Blob | null;
   errorMsg: string;
   numPages: number;
   currentPage: number;
@@ -26,7 +29,7 @@ type State = {
 
 type Action =
   | { type: "reset" }
-  | { type: "ready"; blobUrl: string }
+  | { type: "ready"; blobUrl: string; blob: Blob }
   | { type: "error"; errorMsg: string }
   | { type: "ios" }
   | { type: "loadSuccess"; numPages: number }
@@ -35,10 +38,10 @@ type Action =
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "reset": return { status: "loading", blobUrl: null, errorMsg: "", numPages: 0, currentPage: 1, scale: 1.0 };
-    case "ready": return { ...state, status: "ready", blobUrl: action.blobUrl, errorMsg: "" };
-    case "error": return { ...state, status: "error", blobUrl: null, errorMsg: action.errorMsg };
-    case "ios":   return { ...state, status: "ios", blobUrl: null, errorMsg: "" };
+    case "reset": return { status: "loading", blobUrl: null, blob: null, errorMsg: "", numPages: 0, currentPage: 1, scale: 1.0 };
+    case "ready": return { ...state, status: "ready", blobUrl: action.blobUrl, blob: action.blob, errorMsg: "" };
+    case "error": return { ...state, status: "error", blobUrl: null, blob: null, errorMsg: action.errorMsg };
+    case "ios":   return { ...state, status: "ios", blobUrl: null, blob: null, errorMsg: "" };
     case "loadSuccess": return { ...state, numPages: action.numPages };
     case "setPage": return { ...state, currentPage: Math.max(1, Math.min(action.page, state.numPages)) };
     case "setScale": return { ...state, scale: Math.max(0.5, Math.min(action.scale, 2.0)) };
@@ -60,6 +63,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
   const [state, dispatch] = useReducer(reducer, {
     status: "loading",
     blobUrl: null,
+    blob: null,
     errorMsg: "",
     numPages: 0,
     currentPage: 1,
@@ -93,7 +97,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
       .then((blob) => {
         if (revoked) return;
         objectUrl = URL.createObjectURL(blob);
-        dispatch({ type: "ready", blobUrl: objectUrl });
+        dispatch({ type: "ready", blobUrl: objectUrl, blob });
       })
       .catch((err: Error) => {
         if (revoked || err.name === "AbortError") return;
@@ -261,7 +265,7 @@ export default function PdfViewerModal({ url, title, onClose }: PdfViewerModalPr
                 </div>
                 <div className="pdf-vm-document">
                   <Document
-                    file={state.blobUrl}
+                    file={state.blob || state.blobUrl}
                     onLoadSuccess={({ numPages }) => dispatch({ type: "loadSuccess", numPages })}
                     onLoadError={(error) => dispatch({ type: "error", errorMsg: error.message })}
                     loading={
