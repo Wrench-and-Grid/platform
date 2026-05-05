@@ -1066,8 +1066,9 @@ section { padding: 5.4rem 2.5rem; border-bottom: 1px solid var(--border); }
   padding: .35rem .8rem;
   transition: color .22s ease;
 }
+
 .work-showcase-entry-link::before { content: '[ '; }
-.work-showcase-entry-link::after  { content: ' ]'; }
+.work-showcase-entry-link::after  { content: ' ]'; display: inline; }
 .work-showcase-entry-link:hover   { color: var(--clr-orange); }
 
 /* ── MY WORK ───────────────────────────────────────────── */
@@ -2141,6 +2142,176 @@ footer {
   background: #e84d15;
   transform: translateY(-1px);
   opacity: 1;
+}
+
+/* ── RESUME DOWNLOAD MODAL ──────────────────────────────── */
+.rdm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 650;
+  background: rgba(17, 16, 16, .82);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.rdm-shell {
+  display: flex;
+  flex-direction: column;
+  width: min(90vw, 58rem);
+  height: min(90vh, 54rem);
+  max-height: 100vh; /* safety net — prevents shell escaping viewport */
+  background: var(--clr-off-white);
+  border: 1px solid rgba(17, 16, 16, .1);
+  box-shadow: 0 40px 100px rgba(17, 16, 16, .35);
+  border-radius: .5rem;
+  overflow: hidden;
+}
+
+.rdm-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .65rem .75rem .65rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--clr-off-white);
+  flex-shrink: 0;
+}
+
+.rdm-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.rdm-title {
+  font-family: var(--font-display);
+  font-size: .95rem;
+  letter-spacing: .06em;
+  color: var(--clr-ink);
+}
+
+.rdm-close {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, .5);
+  border-radius: 999px;
+  color: var(--clr-ink-mid);
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+  font-size: .8rem;
+  font-weight: 500;
+}
+
+.rdm-close:hover {
+  background: rgba(255, 91, 34, .1);
+  border-color: var(--clr-orange);
+  color: var(--clr-orange);
+}
+
+.rdm-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.rdm-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--clr-ink-mid);
+}
+
+.rdm-state-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--clr-ink);
+  margin: 0;
+}
+
+.rdm-state-title--light {
+  font-weight: 400;
+}
+
+.rdm-state-description {
+  font-size: .875rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 24rem;
+}
+
+.rdm-spinner {
+  animation: pdf-spin .9s linear infinite;
+  color: var(--clr-orange);
+}
+
+
+
+.rdm-download-bar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--clr-orange);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.rdm-download-bar-btn:hover:not(:disabled) {
+  background: #e84d15;
+  transform: scale(1.05);
+}
+
+.rdm-download-bar-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.rdm-download-bar-btn .rdm-spinner {
+  animation: pdf-spin .9s linear infinite;
+}
+
+
+
+
+
+.rdm-state--success .rdm-state-title {
+  color: var(--clr-orange);
+}
+
+.rdm-state--error .rdm-state-title {
+  color: var(--clr-orange);
+}
+
+.rdm-state--error .rdm-state-description {
+  color: var(--clr-ink-mid);
+}
+
+.rdm-frame {
+  flex: 1;
+  min-height: 0; /* flex children can overflow without this */
+  width: 100%;
+  border: none;
+  display: block;
+  background: #fff;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* ── CONTACT MODAL ─────────────────────────────────────── */
