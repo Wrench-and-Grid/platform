@@ -19,6 +19,7 @@ import HeroSection from "../sections/HeroSection";
 import NavBar from "../sections/NavBar";
 import ResumeStrip from "../sections/ResumeStrip";
 import WorkShowcaseSection from "../sections/WorkShowcaseSection";
+import PressSection from "../../../components/press/PressSection";
 import useRevealOnScroll from "../../../hooks/useRevealOnScroll";
 
 type HomePageProps = {
@@ -54,6 +55,7 @@ export default function HomePage({ onFluidInteractionRegionChange }: HomePagePro
       <HeroSection onMountRegion={onFluidInteractionRegionChange} />
       <AboutSection />
       <WorkShowcaseSection />
+      <PressSection />
       <ResumeStrip />
       <ContactSection />
     </>
