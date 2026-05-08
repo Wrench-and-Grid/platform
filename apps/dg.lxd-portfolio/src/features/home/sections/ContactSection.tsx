@@ -1,45 +1,25 @@
-import { useCallback, useId, useReducer } from "react";
-import { INITIAL_FIELDS, reducer, type FormFields } from "./contactReducer";
-
 export default function ContactSection() {
-  const id = useId();
-  const [{ fields, status, serverError }, dispatch] = useReducer(reducer, {
-    fields: INITIAL_FIELDS,
-    status: "idle",
-    serverError: "",
-  });
-
-  const isBusy = status === "sending";
-
-  /** Creates a stable `onChange` handler for a given field key. */
-  const setField = useCallback(
-    (field: keyof FormFields) =>
-      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        dispatch({ type: "SET_FIELD", field, value: e.target.value });
-      },
-    []
-  );
-
-  const handleSubmit = useCallback(
-    (e: { preventDefault(): void }) => {
-      e.preventDefault();
-      if (isBusy) return;
-
-      dispatch({ type: "SUBMIT_START" });
-
-      setTimeout(() => {
-        dispatch({ type: "SUBMIT_SUCCESS" });
-      }, 800);
-    },
-    [isBusy]
-  );
+  const particles = [
+    { size: 5,   top: "18%", left: "22%", color: "var(--clr-orange)",   dur: "6s",  delay: "0s"    },
+    { size: 3,   top: "35%", left: "68%", color: "var(--clr-aqua)",     dur: "9s",  delay: "1.2s"  },
+    { size: 4,   top: "62%", left: "14%", color: "var(--clr-lavender)", dur: "7s",  delay: "0.4s"  },
+    { size: 6,   top: "78%", left: "55%", color: "var(--clr-orange)",   dur: "11s", delay: "2.5s"  },
+    { size: 3,   top: "50%", left: "82%", color: "var(--clr-aqua)",     dur: "8s",  delay: "0.9s"  },
+    { size: 4,   top: "25%", left: "45%", color: "var(--clr-lavender)", dur: "10s", delay: "3.1s"  },
+    { size: 2.5, top: "88%", left: "30%", color: "var(--clr-blue)",     dur: "7.5s",delay: "1.7s"  },
+    { size: 5,   top: "10%", left: "72%", color: "var(--clr-lavender)", dur: "12s", delay: "0.2s"  },
+    { size: 3,   top: "70%", left: "90%", color: "var(--clr-orange)",   dur: "9.5s",delay: "4s"    },
+    { size: 2,   top: "42%", left: "5%",  color: "var(--clr-aqua)",     dur: "6.5s",delay: "2.8s"  },
+    { size: 4,   top: "55%", left: "40%", color: "var(--clr-blue)",     dur: "13s", delay: "0.6s"  },
+    { size: 3,   top: "92%", left: "75%", color: "var(--clr-lavender)", dur: "8.5s",delay: "3.5s"  },
+  ];
 
   return (
     <section id="contact">
       <div className="contact-inner">
         {/* ── Left column ────────────────────────────────────── */}
         <div className="contact-left">
-          <div className="s-label">Contact</div>
+          {/* <div className="s-label">Contact</div> */}
           <h2>
             LET&apos;S MAKE
             <br />
@@ -56,102 +36,29 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* ── Right column — form ──────────────────────────── */}
-        <form onSubmit={handleSubmit} noValidate aria-label="Contact form">
-          {status === "success" && (
-            <div className="contact-banner contact-banner--success" role="status">
-              <strong>Message sent!</strong> I&apos;ll be in touch soon.
-              <button
-                type="button"
-                className="contact-banner-close"
-                onClick={() => dispatch({ type: "RESET" })}
-                aria-label="Dismiss"
-              >
-                ×
-              </button>
-            </div>
-          )}
-
-          {status === "error" && serverError && (
-            <div className="contact-banner contact-banner--error" role="alert">
-              {serverError}
-            </div>
-          )}
-
-          <div className="form-group">
-            <label className="form-label" htmlFor={`${id}-name`}>Your name</label>
-            <input
-              id={`${id}-name`}
-              name="name"
-              className="form-input"
-              type="text"
-              placeholder="Frida Kahlo"
-              autoComplete="name"
-              required
-              minLength={2}
-              maxLength={120}
-              value={fields.name}
-              onChange={setField("name")}
-              disabled={isBusy}
+        {/* ── Right column — signature over particles ──────────── */}
+        <div className="contact-particles" aria-hidden="true">
+          {particles.map((p, i) => (
+            <span
+              key={i}
+              className="particle"
+              style={{
+                width:  p.size,
+                height: p.size,
+                top:    p.top,
+                left:   p.left,
+                background:       p.color,
+                animationDuration: p.dur,
+                animationDelay:   p.delay,
+              }}
             />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label" htmlFor={`${id}-email`}>Email address</label>
-            <input
-              id={`${id}-email`}
-              name="email"
-              className="form-input"
-              type="email"
-              placeholder="frida@lacasaazul.org"
-              autoComplete="email"
-              required
-              maxLength={254}
-              value={fields.email}
-              onChange={setField("email")}
-              disabled={isBusy}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label" htmlFor={`${id}-type`}>I&apos;m reaching out as a</label>
-            <select
-              id={`${id}-type`}
-              name="type"
-              className="form-input"
-              value={fields.type}
-              onChange={setField("type")}
-              disabled={isBusy}
-            >
-              <option value="">Select one</option>
-              <option value="Recruiter">Recruiter</option>
-              <option value="Collaborator">Collaborator</option>
-              <option value="Nonprofit organization">Nonprofit organization</option>
-              <option value="Prospective client">Prospective client</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label" htmlFor={`${id}-message`}>Message</label>
-            <textarea
-              id={`${id}-message`}
-              name="message"
-              className="form-input"
-              placeholder="Tell me a bit about your project, opportunity, or interest…"
-              required
-              minLength={10}
-              maxLength={4000}
-              value={fields.message}
-              onChange={setField("message")}
-              disabled={isBusy}
-            />
-          </div>
-
-          <button className="form-submit" type="submit" disabled={isBusy}>
-            {isBusy ? "Sending…" : "Let's Work!"}
-          </button>
-        </form>
+          ))}
+          <img
+            src="/dg-sig.svg"
+            alt="Daisy G. signature"
+            className="contact-sig-img"
+          />
+        </div>
       </div>
 
       <footer className="contact-footer">
