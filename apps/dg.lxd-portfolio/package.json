@@ -13,6 +13,7 @@
     "@fontsource-variable/geist": "^5.2.8",
     "@repo/tokens": "workspace:^",
     "@repo/ui": "workspace:^",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "autoprefixer": "^10.4.27",
     "class-variance-authority": "^0.7.1",
