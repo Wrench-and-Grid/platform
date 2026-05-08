@@ -18,6 +18,7 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import CustomCursor from "./components/CustomCursor";
 import GrainFilter from "./components/GrainFilter";
 
@@ -89,6 +90,8 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>
+
+      <Analytics />
     </>
   );
 }
