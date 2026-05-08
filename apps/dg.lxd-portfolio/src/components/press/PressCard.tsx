@@ -18,7 +18,7 @@ export default function PressCard({ title, source, date, excerpt, image, href, r
       className={`relative block w-full max-w-[420px] no-underline${rotate ? ` ${rotate}` : ""}`}
       onClick={onClick ? (e) => { e.preventDefault(); onClick(); } : undefined}
     >
-      <div className="relative flex flex-col bg-[#F4F1EA] shadow-[0_10px_30px_rgba(0,0,0,0.08)] overflow-hidden">
+      <div className="relative flex flex-col bg-[#F4F1EA] shadow-[0_10px_30px_rgba(0,0,0,0.08)] overflow-hidden rounded-lg">
         {/* Paper texture — requires /public/textures/paper.png */}
         <div
           className="absolute inset-0 pointer-events-none bg-[url('/textures/paper.png')] opacity-[0.15] mix-blend-multiply z-10"
