@@ -58,6 +58,7 @@ export default function ContactSection() {
             alt="Daisy G. signature"
             className="contact-sig-img"
           />
+          <p className="contact-sig-text">Daisy Gonzalez<br />Learning Experience Designer</p>
         </div>
       </div>
 
