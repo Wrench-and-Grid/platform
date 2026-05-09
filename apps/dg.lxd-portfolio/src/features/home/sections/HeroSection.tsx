@@ -59,7 +59,7 @@ export default function HeroSection({ onMountRegion }: HeroSectionProps) {
               width="380"
               height="507"
             />
-            <div className="hero-photo-label">Daisy G. | Creative Director</div>
+            <div className="hero-photo-label">Daisy G. | Learning Experience Designer</div>
           </div>
           <p className="hero-tagline">
             Thoughtful design and communication can shape how people understand, connect, and act.
